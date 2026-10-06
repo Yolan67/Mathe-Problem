@@ -1,0 +1,13 @@
+seed 201 final N=605 best maxcos=0.510006813439
+seed 202 final N=605 best maxcos=0.509823395022
+seed 203 final N=605 best maxcos=0.507406254660
+seed 204 final N=605 best maxcos=0.507406240013
+seed 205 final N=605 best maxcos=0.509980632248
+seed 206 final N=605 best maxcos=0.509980594884
+seed 207 final N=605 best maxcos=0.510669009236
+seed 208 final N=605 best maxcos=0.507143609767
+seed 209 final N=605 best maxcos=0.507141820399
+seed 210 final N=605 best maxcos=0.507407814400
+seed 211 final N=605 best maxcos=0.507407622666
+seed 212 final N=605 best maxcos=0.507407751538
+seed 213 final N=605 best maxcos=0.509489211511

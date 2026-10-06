@@ -1,0 +1,1 @@
+seed 200 sig 0.116 valid840 -> 841: final N=841 best maxcos=0.500744304387

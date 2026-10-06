@@ -1,0 +1,5 @@
+seed 100 sig 0.151 valid840 -> 841: final N=841 best maxcos=0.510976261924
+seed 101 sig 0.303 valid840 -> 841: final N=841 best maxcos=0.531746510508
+seed 102 sig 0.152 invalid840 0.50215290
+seed 103 sig 0.443 invalid840 0.511829512092
+seed 104 sig 0.436 valid840 -> 841: loaded 840 points, maxcos 0.500000000000000 (0,24)

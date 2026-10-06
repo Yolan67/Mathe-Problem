@@ -81,6 +81,23 @@ Each pair-slice R^5 then contains a full D5 root system (40 = kissing number of 
 * Calibration in R^12: our optimiser does not reproduce the 840 -> 841 step from the classical code 840
   (0.532; with 816 fixed even the 24-cell is not recovered), consistent with the literature: the 841 comes
   from a special member of a continuous family of 840s (flexible "48-systems").
+* Restacking: slicing the 604 along e_8 (heights 0, ±1/2, ±1) and applying a symmetry of the 402-point equator
+  to the lower half gives a second, non-isometric and non-antipodal valid 604 (22840 contacts, 476 antipodal
+  points; `scripts/restack.py`, `runs/restack/c8_v1.txt`).  Its deepest holes are shallower (cos 0.603);
+  605 attempts from it: 0.5106.  The restacking family closes at these two 604s (general automorphism search
+  `src/autgen.c`, `scripts/restack2.py`).
+* Complete algebraic candidate set C = {a + b/sqrt2 : a,b in Z^11, |a|^2+|b|^2/2 = 4, a.b = 0} (1147322 vectors,
+  contains the whole 604; `scripts/zr2cands.py`): MIS with all candidates up to 12 conflicts, orbit-MIS under
+  subgroups of the 604's symmetry group (order 16384) and half-space surgeries (fix one half along each axis,
+  re-pack the other half from C): always exactly 604.
+* Frame-variant campaign (exact 604s with rotated slice/core frame, 605 minimax): local optima are quantised
+  at 0.507140 / 0.507408 / 0.5099 / ... ; best 0.507140 (`candidates/near605_maxcos0.507140_frame_s5_INVALID.txt`).
+  In the best near-misses the 605th point migrates from the deep hole into the slice/core region.
+* Calibration in R^12 with the flexible 840 family (60+60 block vectors with deformable "48-systems" + 720
+  bridges): re-optimised deformed 840s are valid; 841 minimax from one member reaches 0.500744 (the published
+  841 exists), i.e. the method gets close only when the starting family is flexible.  The 604 family is not.
+* K12/G33 family (Ganzhinov 592, only 4590 exact contacts): continuous growth reproduces 593 within ~2 minutes
+  (AlphaEvolve's step); 594 stalls at penalty energy ~4e-5.
 
 ## Layout
 * `validate/` exact validators · `src/` C search engines (`kiss.c` continuous, `misg.c`/`misw.c`/`mis.c` MIS)

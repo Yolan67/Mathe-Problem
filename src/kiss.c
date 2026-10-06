@@ -585,6 +585,62 @@ int main(int argc, char **argv) {
     printf("final best %.12f\n", best);
     return 0;
   }
+
+  if (!strcmp(mode, "adam")) {
+    // log-Riesz energy L = log sum_{i<j} |x_i-x_j|^{-s} with exponent continuation, Adam on unnormalized coords
+    int add = atoi(argval(argc, argv, "-a", "0"));
+    double s0 = atof(argval(argc, argv, "-s0", "8")), s1 = atof(argval(argc, argv, "-s1", "4000"));
+    int stages = atoi(argval(argc, argv, "-stages", "40")), steps = atoi(argval(argc, argv, "-steps", "400"));
+    double lr0 = atof(argval(argc, argv, "-lr", "0.003"));
+    double cut = atof(argval(argc, argv, "-cut", "0.0"));
+    int cap = N + add + 8;
+    X = realloc(X, (size_t)cap * S * sizeof(double));
+    for (int r = 0; r < add; r++) { double y[S]; deepest_hole(X, N, -1, y, 20000, 10); memcpy(X + (size_t)N * S, y, sizeof y); N++; }
+    double *M1 = calloc((size_t)N * S, sizeof(double)), *M2 = calloc((size_t)N * S, sizeof(double)), *Gr = malloc((size_t)N * S * sizeof(double));
+    double *Xb = malloc((size_t)N * S * sizeof(double)); double best = 9; long t = 0;
+    char fnb[512]; snprintf(fnb, sizeof fnb, "%s_adam_N%d_s%llu.txt", out, N, (unsigned long long)seed);
+    int *pi = NULL, *pj = NULL; long np = 0, pcap = 0;
+    for (int st = 0; st < stages; st++) {
+      double sexp = s0 * pow(s1 / s0, st / (double)(stages - 1));
+      double lr = lr0 * pow(atof(argval(argc, argv, "-lr1", "1e-6")) / lr0, st / (double)(stages - 1));
+      for (int it = 0; it < steps; it++) {
+        if (it % 50 == 0) { // rebuild pair list
+          np = 0;
+          for (int i = 0; i < N; i++) for (int j = i + 1; j < N; j++) if (dot(X + i * S, X + j * S) > cut) {
+            if (np == pcap) { pcap = pcap ? 2 * pcap : 1 << 16; pi = realloc(pi, pcap * sizeof(int)); pj = realloc(pj, pcap * sizeof(int)); }
+            pi[np] = i; pj[np] = j; np++; }
+        }
+        // energy: terms e_p = exp(-(s/2) log(2-2c) - m) for stability
+        double mx = -1e300;
+        static double *lg = NULL; static long lgc = 0; if (lgc < np) { lgc = np; lg = realloc(lg, lgc * sizeof(double)); }
+        for (long p = 0; p < np; p++) { double c = dot(X + pi[p] * S, X + pj[p] * S); double d2 = 2 - 2 * c; if (d2 < 1e-12) d2 = 1e-12; lg[p] = -0.5 * sexp * log(d2); if (lg[p] > mx) mx = lg[p]; }
+        double Z = 0; for (long p = 0; p < np; p++) { lg[p] = exp(lg[p] - mx); Z += lg[p]; }
+        memset(Gr, 0, (size_t)N * S * sizeof(double));
+        for (long p = 0; p < np; p++) {
+          int i = pi[p], j = pj[p]; double c = dot(X + i * S, X + j * S); double d2 = 2 - 2 * c; if (d2 < 1e-12) d2 = 1e-12;
+          double w = (lg[p] / Z) * sexp / d2;   // dL/dc = (s/2)*2/d2 * weight = s/d2 * weight
+          for (int k = 0; k < S; k++) { Gr[i * S + k] += w * X[j * S + k]; Gr[j * S + k] += w * X[i * S + k]; }
+        }
+        t++;
+        double b1 = 0.9, b2 = 0.999, bc1 = 1 - pow(b1, t), bc2 = 1 - pow(b2, t);
+        for (int i = g_nfix; i < N; i++) {
+          double *g = Gr + i * S, *x = X + i * S; double gx = dot(g, x);
+          for (int k = 0; k < S; k++) g[k] -= gx * x[k];
+          for (int k = 0; k < g_dim; k++) {
+            M1[i * S + k] = b1 * M1[i * S + k] + (1 - b1) * g[k]; M2[i * S + k] = b2 * M2[i * S + k] + (1 - b2) * g[k] * g[k];
+            x[k] -= lr * (M1[i * S + k] / bc1) / (sqrt(M2[i * S + k] / bc2) + 1e-12);
+          }
+          normalize(x);
+        }
+      }
+      double mc = maxcos(X, N, NULL, NULL);
+      if (mc < best) { best = mc; memcpy(Xb, X, (size_t)N * S * sizeof(double)); save(fnb, Xb, N); }
+      printf("stage %d s=%.1f lr=%.2e maxcos=%.10f best=%.10f pairs=%ld\n", st, sexp, lr, mc, best, np); fflush(stdout);
+      if (best <= 0.5) break;
+    }
+    printf("final N=%d best maxcos=%.12f\n", N, best);
+    return 0;
+  }
   if (!strcmp(mode, "minimax")) {
     // optional: add points at holes, then Riesz warmup and LSE continuation on max cos
     int add = atoi(argval(argc, argv, "-a", "0"));
@@ -592,9 +648,11 @@ int main(int argc, char **argv) {
     double rh = atof(argval(argc, argv, "-rh", "400"));
     int cap = N + add + 8;
     X = realloc(X, (size_t)cap * S * sizeof(double));
+    int randhole = atoi(argval(argc, argv, "-randhole", "0"));
     for (int r = 0; r < add; r++) {
       double y[S];
-      double v = deepest_hole(X, N, -1, y, 20000, 10);
+      double v = randhole ? deepest_hole(X, N, -1, y, randhole, 1) : deepest_hole(X, N, -1, y, 20000, 10);
+      printf("inserted point at hole with maxcos %.6f\n", v);
       memcpy(X + (size_t)N * S, y, sizeof y);
       N++;
     }
