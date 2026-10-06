@@ -1,0 +1,25 @@
+loaded 598 points, maxcos 0.500000000000000 (0,16)
+added point in hole with maxcos 0.592378 -> N=599
+initial relax E=1.2326e-32
+SUCCESS N=599 maxcos=0.500000000000000 iter=0 time=0.1 -> /tmp/claude-0/runs/g598_N599_s21.txt
+grow to N=600, hole 0.545353, E=0.0000e+00
+SUCCESS N=600 maxcos=0.500000000000000 iter=0 time=0.3 -> /tmp/claude-0/runs/g598_N600_s21.txt
+grow to N=601, hole 0.607575, E=3.1062e-02
+it 20 N=601 E=2.1968e-02 best=2.1968e-02 acc=7 mv=3 t=6
+it 40 N=601 E=8.0065e-03 best=8.0065e-03 acc=13 mv=2 t=13
+it 60 N=601 E=7.9800e-03 best=7.9800e-03 acc=22 mv=3 t=20
+it 80 N=601 E=7.9798e-03 best=7.9798e-03 acc=28 mv=0 t=27
+it 100 N=601 E=7.9798e-03 best=7.9798e-03 acc=33 mv=2 t=33
+it 120 N=601 E=7.8394e-03 best=7.8394e-03 acc=38 mv=0 t=39
+it 140 N=601 E=7.8394e-03 best=7.8394e-03 acc=40 mv=2 t=45
+it 160 N=601 E=7.8394e-03 best=7.8394e-03 acc=43 mv=0 t=51
+it 180 N=601 E=2.7764e-03 best=2.7764e-03 acc=47 mv=3 t=55
+it 200 N=601 E=2.7763e-03 best=2.7763e-03 acc=54 mv=2 t=61
+it 220 N=601 E=2.7763e-03 best=2.7763e-03 acc=57 mv=0 t=66
+it 240 N=601 E=2.7763e-03 best=2.7763e-03 acc=57 mv=0 t=71
+it 260 N=601 E=2.7763e-03 best=2.7763e-03 acc=59 mv=0 t=76
+it 280 N=601 E=2.7763e-03 best=2.7763e-03 acc=61 mv=1 t=82
+it 300 N=601 E=1.5544e-03 best=1.5544e-03 acc=64 mv=2 t=88
+it 320 N=601 E=1.5544e-03 best=1.5544e-03 acc=67 mv=0 t=95
+it 340 N=601 E=1.5544e-03 best=1.5544e-03 acc=67 mv=3 t=102
+it 360 N=601 E=1.5544e-03 best=1.5544e-03 acc=67 mv=0 t=107

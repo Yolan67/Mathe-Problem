@@ -33,6 +33,8 @@ def main():
     ap.add_argument('--den', type=int, default=2)
     ap.add_argument('--out', required=True)
     ap.add_argument('--nograph', action='store_true')
+    ap.add_argument('--viol', type=int, default=0, help='allowed number of violated blocks/axes')
+    ap.add_argument('--withbackbone', action='store_true', help='include backbone vectors as vertices (listed first)')
     a = ap.parse_args()
     den = a.den
     blocks = [tuple(map(int, l.split())) for l in open(a.blocks) if l.strip()]
@@ -50,7 +52,8 @@ def main():
     blocks_of = [[bi for bi, B in enumerate(blocks) if i in B] for i in range(dim)]
     bsum = [0.0] * len(blocks)
     cur = [0] * dim
-    def dfs(i, remr, rems):
+    bviol = [False] * len(blocks)
+    def dfs(i, remr, rems, nv):
         if i == dim:
             if remr == 0 and rems == 0:
                 out.append(tuple(cur))
@@ -58,38 +61,53 @@ def main():
         for k in range(len(absvals)):
             if nr[k] > remr:
                 continue
+            add = 0
             if i in AX and vf[k] > 1 + eps:
-                continue
-            ok = True
+                add += 1
+            newly = []
             for bi in blocks_of[i]:
-                if bsum[bi] + vf[k] > 2 + 1e-7:
-                    ok = False; break
-            if not ok:
+                if not bviol[bi] and bsum[bi] + vf[k] > 2 + 1e-7:
+                    newly.append(bi)
+            if nv + add + len(newly) > a.viol:
                 continue
-            # remaining norm must be achievable: crude bound skip
             for bi in blocks_of[i]:
                 bsum[bi] += vf[k]
+            for bi in newly:
+                bviol[bi] = True
             cur[i] = k
-            dfs(i + 1, remr - nr[k], rems - ns[k])
+            dfs(i + 1, remr - nr[k], rems - ns[k], nv + add + len(newly))
+            for bi in newly:
+                bviol[bi] = False
             for bi in blocks_of[i]:
                 bsum[bi] -= vf[k]
         cur[i] = 0
-    dfs(0, target, 0)
+    dfs(0, target, 0, 0)
     print('abs patterns', len(out), file=sys.stderr)
     # exact recheck of block sums with integer arithmetic, then expand signs
     vecs = []
+    if a.withbackbone:
+        for s_ in sorted(AX):
+            for sg in (1, -1):
+                v = [[0, 0] for _ in range(dim)]; v[s_] = [2 * den * sg, 0]; vecs.append(v)
+        for B in blocks:
+            for sg in itertools.product((1, -1), repeat=4):
+                v = [[0, 0] for _ in range(dim)]
+                for i, s_ in zip(B, sg): v[i] = [den * s_, 0]
+                vecs.append(v)
+        print('backbone vertices', len(vecs), file=sys.stderr)
+    bbset = set(tuple(map(tuple, v)) for v in vecs)
     for pat in out:
-        ok = True
+        nv = 0
         for B in blocks:
             sa = sum(absvals[pat[i]][0] for i in B)
             sb = sum(absvals[pat[i]][1] for i in B)
             if not le_const(sa, sb, 2 * den):
-                ok = False; break
+                nv += 1
         for s in AX:
             p, q = absvals[pat[s]]
             if not le_const(p, q, den):
-                ok = False
-        if not ok:
+                nv += 1
+        if nv > a.viol:
             continue
         supp = [i for i in range(dim) if pat[i] != 0]
         for sg in itertools.product((1, -1), repeat=len(supp)):
@@ -97,6 +115,8 @@ def main():
             for i, s in zip(supp, sg):
                 p, q = absvals[pat[i]]
                 v[i] = [s * p, s * q]
+            if tuple(map(tuple, v)) in bbset:
+                continue
             vecs.append(v)
     n = len(vecs)
     print('candidates', n, file=sys.stderr)

@@ -5,3 +5,5 @@ misg
 shells/*.graph
 shells/*.npy
 __pycache__/
+shells/*.json
+shells/*.vec

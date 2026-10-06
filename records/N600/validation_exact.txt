@@ -1,0 +1,6 @@
+points: 600  dim: 11
+max <u_i,u_j>   = 0.5
+min |u_i - u_j| = 1.0
+max cos^2 exact = 1/4  (must be <= 1/4)
+pairs violating: 0
+RESULT: VALID

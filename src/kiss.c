@@ -125,7 +125,7 @@ static void nl_build(ctx_t *c, const double *X) {
   c->np = 0;
   double th = c->t - c->skin;
   for (int i = 0; i < N; i++)
-    for (int j = i + 1; j < N; j++)
+    for (int j = (i < g_nfix ? (g_nfix > i + 1 ? g_nfix : i + 1) : i + 1); j < N; j++)
       if (dot(X + i * S, X + j * S) > th) {
         if (c->np == c->cap) {
           c->cap = c->cap ? 2 * c->cap : 1 << 16;
