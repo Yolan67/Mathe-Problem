@@ -1,0 +1,22 @@
+loaded 604 points, maxcos 0.500000000000000 (0,500)
+inserted point at hole with maxcos 0.677641
+riesz warmup maxcos=0.51109756
+lse h=200 maxcos=0.5221786431
+lse h=300 maxcos=0.5174857931
+lse h=450 maxcos=0.5141727236
+lse h=675 maxcos=0.5118860970
+lse h=1012 maxcos=0.5103318990
+lse h=1519 maxcos=0.5093684242
+lse h=2278 maxcos=0.5087215318
+lse h=3417 maxcos=0.5082905347
+lse h=5126 maxcos=0.5079834101
+lse h=7689 maxcos=0.5077854753
+lse h=11533 maxcos=0.5076541458
+lse h=17300 maxcos=0.5075656952
+lse h=25949 maxcos=0.5075073994
+lse h=38924 maxcos=0.5074683893
+lse h=58386 maxcos=0.5074424497
+lse h=87579 maxcos=0.5074253305
+lse h=131368 maxcos=0.5074138894
+lse h=197052 maxcos=0.5074062470
+final N=605 best maxcos=0.507406246955

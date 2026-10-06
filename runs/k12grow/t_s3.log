@@ -1,0 +1,17 @@
+loaded 593 points, maxcos 0.500000000000011 (16,196)
+added point in hole with maxcos 0.598833 -> N=594
+initial relax E=3.2267e-03
+it 20 N=594 E=2.0117e-03 best=2.0117e-03 acc=15 mv=3 t=22
+it 40 N=594 E=7.0430e-05 best=7.0430e-05 acc=28 mv=1 t=71
+it 60 N=594 E=4.1594e-05 best=4.1594e-05 acc=38 mv=1 t=129
+it 80 N=594 E=4.1560e-05 best=4.1556e-05 acc=47 mv=2 t=179
+it 100 N=594 E=4.1496e-05 best=4.1408e-05 acc=63 mv=0 t=215
+it 120 N=594 E=4.1405e-05 best=4.1404e-05 acc=78 mv=1 t=256
+it 140 N=594 E=4.1503e-05 best=4.1404e-05 acc=89 mv=0 t=298
+it 160 N=594 E=4.1415e-05 best=4.1404e-05 acc=100 mv=0 t=351
+it 180 N=594 E=4.1404e-05 best=4.1404e-05 acc=114 mv=0 t=385
+it 200 N=594 E=4.1404e-05 best=4.1404e-05 acc=126 mv=2 t=431
+it 220 N=594 E=4.1568e-05 best=4.1404e-05 acc=136 mv=1 t=492
+it 240 N=594 E=4.1405e-05 best=4.1404e-05 acc=148 mv=3 t=543
+it 260 N=594 E=4.1464e-05 best=4.1404e-05 acc=161 mv=2 t=584
+it 280 N=594 E=4.1409e-05 best=4.1404e-05 acc=175 mv=0 t=610

@@ -1,0 +1,79 @@
+loaded 598 points, maxcos 0.500000000000000 (0,5)
+added point in hole with maxcos 0.590358 -> N=599
+initial relax E=9.1006e-27
+SUCCESS N=599 maxcos=0.500000000000027 iter=0 time=0.2 -> runs/grow598/g_N599_s5.txt
+grow to N=600, hole 0.558395, E=9.4131e-27
+SUCCESS N=600 maxcos=0.500000000000014 iter=0 time=0.4 -> runs/grow598/g_N600_s5.txt
+grow to N=601, hole 0.611374, E=3.3565e-02
+it 20 N=601 E=2.7361e-02 best=2.7361e-02 acc=2 mv=0 t=9
+it 40 N=601 E=7.3897e-03 best=7.3897e-03 acc=8 mv=2 t=21
+it 60 N=601 E=7.3895e-03 best=7.3895e-03 acc=14 mv=2 t=34
+it 80 N=601 E=7.3008e-03 best=7.3008e-03 acc=17 mv=1 t=46
+it 100 N=601 E=7.2998e-03 best=7.2998e-03 acc=24 mv=0 t=59
+it 120 N=601 E=7.2998e-03 best=7.2998e-03 acc=29 mv=0 t=73
+it 140 N=601 E=7.2998e-03 best=7.2998e-03 acc=29 mv=1 t=87
+it 160 N=601 E=1.4082e-03 best=1.4082e-03 acc=34 mv=3 t=102
+it 180 N=601 E=1.4082e-03 best=1.4082e-03 acc=37 mv=2 t=117
+it 200 N=601 E=1.4082e-03 best=1.4082e-03 acc=40 mv=0 t=134
+it 220 N=601 E=1.4082e-03 best=1.4082e-03 acc=43 mv=2 t=147
+it 240 N=601 E=1.4081e-03 best=1.4081e-03 acc=48 mv=1 t=161
+it 260 N=601 E=1.4081e-03 best=1.4081e-03 acc=54 mv=2 t=176
+it 280 N=601 E=1.4081e-03 best=1.4081e-03 acc=57 mv=0 t=189
+it 300 N=601 E=1.4081e-03 best=1.4081e-03 acc=61 mv=2 t=203
+it 320 N=601 E=1.4081e-03 best=1.4081e-03 acc=64 mv=0 t=218
+it 340 N=601 E=1.4081e-03 best=1.4081e-03 acc=66 mv=3 t=232
+it 360 N=601 E=1.4081e-03 best=1.4081e-03 acc=68 mv=1 t=246
+it 380 N=601 E=1.4081e-03 best=1.4081e-03 acc=71 mv=2 t=263
+it 400 N=601 E=1.4081e-03 best=1.4081e-03 acc=74 mv=0 t=276
+it 420 N=601 E=1.4081e-03 best=1.4081e-03 acc=74 mv=1 t=293
+it 440 N=601 E=1.4081e-03 best=1.4081e-03 acc=74 mv=1 t=307
+it 460 N=601 E=1.4081e-03 best=1.4081e-03 acc=75 mv=3 t=321
+it 480 N=601 E=1.4081e-03 best=1.4081e-03 acc=75 mv=2 t=334
+it 500 N=601 E=1.4081e-03 best=1.4081e-03 acc=75 mv=0 t=349
+it 520 N=601 E=1.4081e-03 best=1.4081e-03 acc=75 mv=0 t=362
+it 540 N=601 E=1.4081e-03 best=1.4081e-03 acc=76 mv=2 t=376
+it 560 N=601 E=1.4081e-03 best=1.4081e-03 acc=76 mv=0 t=390
+it 580 N=601 E=1.4081e-03 best=1.4081e-03 acc=77 mv=2 t=403
+it 600 N=601 E=1.4081e-03 best=1.4081e-03 acc=77 mv=2 t=417
+it 620 N=601 E=1.4081e-03 best=1.4081e-03 acc=79 mv=1 t=431
+it 640 N=601 E=1.4081e-03 best=1.4081e-03 acc=79 mv=0 t=446
+it 660 N=601 E=1.4081e-03 best=1.4081e-03 acc=80 mv=0 t=460
+it 680 N=601 E=1.4081e-03 best=1.4081e-03 acc=80 mv=0 t=473
+it 700 N=601 E=1.4081e-03 best=1.4081e-03 acc=81 mv=2 t=487
+it 720 N=601 E=1.4081e-03 best=1.4081e-03 acc=83 mv=1 t=502
+it 740 N=601 E=1.4081e-03 best=1.4081e-03 acc=83 mv=0 t=517
+it 760 N=601 E=1.4081e-03 best=1.4081e-03 acc=84 mv=2 t=531
+it 780 N=601 E=1.4081e-03 best=1.4081e-03 acc=84 mv=3 t=546
+it 800 N=601 E=1.4081e-03 best=1.4081e-03 acc=85 mv=0 t=563
+it 820 N=601 E=1.4081e-03 best=1.4081e-03 acc=89 mv=1 t=576
+it 840 N=601 E=1.4081e-03 best=1.4081e-03 acc=90 mv=3 t=592
+it 860 N=601 E=1.4081e-03 best=1.4081e-03 acc=91 mv=1 t=606
+it 880 N=601 E=1.4081e-03 best=1.4081e-03 acc=92 mv=2 t=620
+it 900 N=601 E=1.4081e-03 best=1.4081e-03 acc=93 mv=1 t=634
+it 920 N=601 E=1.4081e-03 best=1.4081e-03 acc=93 mv=0 t=649
+it 940 N=601 E=1.4081e-03 best=1.4081e-03 acc=93 mv=0 t=663
+it 960 N=601 E=1.4081e-03 best=1.4081e-03 acc=97 mv=0 t=678
+it 980 N=601 E=1.4081e-03 best=1.4081e-03 acc=98 mv=1 t=691
+it 1000 N=601 E=1.4081e-03 best=1.4081e-03 acc=100 mv=0 t=705
+it 1020 N=601 E=1.4081e-03 best=1.4081e-03 acc=100 mv=2 t=720
+it 1040 N=601 E=1.4081e-03 best=1.4081e-03 acc=100 mv=1 t=734
+it 1060 N=601 E=1.4081e-03 best=1.4081e-03 acc=101 mv=1 t=748
+it 1080 N=601 E=1.4081e-03 best=1.4081e-03 acc=102 mv=1 t=764
+it 1100 N=601 E=1.4081e-03 best=1.4081e-03 acc=102 mv=1 t=777
+it 1120 N=601 E=1.4081e-03 best=1.4081e-03 acc=102 mv=1 t=791
+it 1140 N=601 E=1.4081e-03 best=1.4081e-03 acc=102 mv=3 t=804
+it 1160 N=601 E=1.4081e-03 best=1.4081e-03 acc=103 mv=2 t=819
+it 1180 N=601 E=1.4081e-03 best=1.4081e-03 acc=103 mv=1 t=833
+it 1200 N=601 E=1.4081e-03 best=1.4081e-03 acc=104 mv=3 t=849
+it 1220 N=601 E=1.4081e-03 best=1.4081e-03 acc=105 mv=1 t=862
+it 1240 N=601 E=1.4081e-03 best=1.4081e-03 acc=106 mv=0 t=876
+it 1260 N=601 E=1.4081e-03 best=1.4081e-03 acc=106 mv=2 t=892
+it 1280 N=601 E=1.4081e-03 best=1.4081e-03 acc=106 mv=2 t=904
+it 1300 N=601 E=1.4081e-03 best=1.4081e-03 acc=107 mv=1 t=918
+it 1320 N=601 E=1.4081e-03 best=1.4081e-03 acc=107 mv=0 t=932
+it 1340 N=601 E=1.4081e-03 best=1.4081e-03 acc=108 mv=1 t=947
+it 1360 N=601 E=1.4081e-03 best=1.4081e-03 acc=110 mv=2 t=960
+it 1380 N=601 E=1.4081e-03 best=1.4081e-03 acc=111 mv=0 t=974
+it 1400 N=601 E=1.4081e-03 best=1.4081e-03 acc=111 mv=2 t=988
+it 1420 N=601 E=1.4081e-03 best=1.4081e-03 acc=112 mv=0 t=1002
+it 1440 N=601 E=1.4081e-03 best=1.4081e-03 acc=114 mv=0 t=1015

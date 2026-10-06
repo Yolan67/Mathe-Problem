@@ -1,0 +1,53 @@
+loaded 592 points, maxcos 0.500000000023360 (108,269)
+added point in hole with maxcos 0.601066 -> N=593
+initial relax E=5.9225e-07
+it 20 N=593 E=1.0567e-07 best=1.0567e-07 acc=14 mv=3 t=62
+it 40 N=593 E=6.9919e-27 best=6.9919e-27 acc=22 mv=1 t=107
+SUCCESS N=593 maxcos=0.500000000000040 iter=40 time=106.7 -> runs/k12grow/g_N593_s2.txt
+grow to N=594, hole 0.608149, E=1.5255e-03
+it 60 N=594 E=1.4694e-03 best=1.4694e-03 acc=34 mv=2 t=122
+it 80 N=594 E=1.1779e-03 best=1.1779e-03 acc=42 mv=0 t=143
+it 100 N=594 E=1.0765e-03 best=1.0765e-03 acc=54 mv=3 t=169
+it 120 N=594 E=7.5911e-04 best=7.5911e-04 acc=60 mv=0 t=189
+it 140 N=594 E=5.2732e-04 best=5.2732e-04 acc=66 mv=3 t=222
+it 160 N=594 E=3.7796e-04 best=3.7796e-04 acc=80 mv=2 t=240
+it 180 N=594 E=3.3416e-04 best=3.3416e-04 acc=90 mv=2 t=265
+it 200 N=594 E=3.0895e-04 best=3.0895e-04 acc=97 mv=0 t=288
+it 220 N=594 E=3.0895e-04 best=3.0895e-04 acc=100 mv=1 t=314
+it 240 N=594 E=3.0895e-04 best=3.0895e-04 acc=100 mv=2 t=339
+it 260 N=594 E=1.4097e-04 best=1.4097e-04 acc=101 mv=0 t=390
+it 280 N=594 E=5.3783e-05 best=5.3783e-05 acc=113 mv=2 t=457
+it 300 N=594 E=5.3782e-05 best=5.3782e-05 acc=119 mv=0 t=500
+it 320 N=594 E=4.8786e-05 best=4.8786e-05 acc=124 mv=0 t=549
+it 340 N=594 E=4.8786e-05 best=4.8786e-05 acc=126 mv=2 t=587
+it 360 N=594 E=4.6132e-05 best=4.6132e-05 acc=138 mv=1 t=621
+it 380 N=594 E=4.6132e-05 best=4.6132e-05 acc=141 mv=3 t=666
+it 400 N=594 E=4.5723e-05 best=4.5723e-05 acc=148 mv=0 t=709
+it 420 N=594 E=4.5637e-05 best=4.5637e-05 acc=155 mv=0 t=766
+it 440 N=594 E=4.5603e-05 best=4.5603e-05 acc=161 mv=2 t=802
+it 460 N=594 E=4.5603e-05 best=4.5603e-05 acc=164 mv=0 t=841
+it 480 N=594 E=4.5578e-05 best=4.5578e-05 acc=169 mv=1 t=877
+it 500 N=594 E=4.5574e-05 best=4.5574e-05 acc=174 mv=3 t=911
+it 520 N=594 E=4.5574e-05 best=4.5574e-05 acc=176 mv=0 t=952
+it 540 N=594 E=4.5154e-05 best=4.5154e-05 acc=183 mv=0 t=1001
+it 560 N=594 E=4.4979e-05 best=4.4979e-05 acc=190 mv=2 t=1046
+it 580 N=594 E=4.4975e-05 best=4.4975e-05 acc=195 mv=2 t=1091
+it 600 N=594 E=4.4975e-05 best=4.4975e-05 acc=196 mv=0 t=1138
+it 620 N=594 E=4.4975e-05 best=4.4975e-05 acc=196 mv=1 t=1173
+it 640 N=594 E=4.4975e-05 best=4.4975e-05 acc=197 mv=0 t=1211
+it 660 N=594 E=4.4975e-05 best=4.4975e-05 acc=197 mv=2 t=1249
+it 680 N=594 E=4.4975e-05 best=4.4975e-05 acc=197 mv=2 t=1272
+it 700 N=594 E=4.4975e-05 best=4.4975e-05 acc=197 mv=3 t=1306
+it 720 N=594 E=4.4975e-05 best=4.4975e-05 acc=197 mv=0 t=1354
+it 740 N=594 E=4.4975e-05 best=4.4975e-05 acc=197 mv=1 t=1395
+it 760 N=594 E=4.4975e-05 best=4.4975e-05 acc=197 mv=0 t=1448
+it 780 N=594 E=4.4975e-05 best=4.4975e-05 acc=197 mv=3 t=1491
+it 800 N=594 E=4.4975e-05 best=4.4975e-05 acc=197 mv=0 t=1531
+it 820 N=594 E=4.4906e-05 best=4.4906e-05 acc=203 mv=0 t=1579
+it 840 N=594 E=4.4906e-05 best=4.4906e-05 acc=205 mv=1 t=1623
+it 860 N=594 E=4.4906e-05 best=4.4906e-05 acc=206 mv=0 t=1655
+it 880 N=594 E=4.4906e-05 best=4.4906e-05 acc=208 mv=0 t=1697
+it 900 N=594 E=4.4895e-05 best=4.4895e-05 acc=213 mv=2 t=1740
+it 920 N=594 E=4.4895e-05 best=4.4895e-05 acc=214 mv=0 t=1797
+it 940 N=594 E=4.4895e-05 best=4.4895e-05 acc=216 mv=2 t=1853
+it 960 N=594 E=4.4895e-05 best=4.4895e-05 acc=218 mv=1 t=1886

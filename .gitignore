@@ -21,3 +21,10 @@ runs/**/*.graph
 runs/**/*.npy
 kissA
 kissR
+autgen
+corb
+regorb
+runs/**/*.wgraph
+runs/**/*.members
+runs/**/*.bin
+runs/**/*.reps
