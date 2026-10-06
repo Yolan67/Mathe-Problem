@@ -165,6 +165,37 @@ static double eval(ctx_t *c, const double *Y, double *Xn, double *G) {
   if (nl_check(c, Xn)) nl_build(c, Xn);
   memset(G, 0, (size_t)N * S * sizeof(double));
   double E = 0, t = c->t;
+  if (g_pot == 2) {
+    // smooth max of cos over listed pairs with cc > t
+    double m = -1e300;
+    for (int p = 0; p < c->np; p++) {
+      double cc = dot(Xn + c->pi[p] * S, Xn + c->pj[p] * S);
+      if (cc > m) m = cc;
+    }
+    double Z = 0;
+    static double *ws = NULL; static int wcap = 0;
+    if (wcap < c->np) { wcap = c->np; ws = realloc(ws, wcap * sizeof(double)); }
+    for (int p = 0; p < c->np; p++) {
+      double cc = dot(Xn + c->pi[p] * S, Xn + c->pj[p] * S);
+      double e = (cc > t) ? exp(g_h * (cc - m)) : 0;
+      ws[p] = e; Z += e;
+    }
+    E = m + log(Z) / g_h;
+    for (int p = 0; p < c->np; p++) {
+      if (ws[p] < 1e-300) continue;
+      double w = ws[p] / Z;
+      int i = c->pi[p], j = c->pj[p];
+      const double *xi = Xn + i * S, *xj = Xn + j * S;
+      double *gi = G + i * S, *gj = G + j * S;
+      for (int k = 0; k < S; k++) { gi[k] += w * xj[k]; gj[k] += w * xi[k]; }
+    }
+    memset(G, 0, (size_t)g_nfix * S * sizeof(double));
+    for (int i = g_nfix; i < N; i++) {
+      double *g = G + i * S; const double *x = Xn + i * S; double gx = dot(g, x);
+      for (int k = 0; k < S; k++) g[k] = (g[k] - gx * x[k]) / nrm[i];
+    }
+    return E;
+  }
   for (int p = 0; p < c->np; p++) {
     int i = c->pi[p], j = c->pj[p];
     const double *xi = Xn + i * S, *xj = Xn + j * S;
@@ -303,7 +334,7 @@ static relax_res relax(ctx_t *c, double *Y, int maxit, double Etol) {
     }
     // stagnation check
     if ((it % 500) == 499) {
-      if (E > 0.999 * Eprev_check && E > 1e-10) { it++; break; }
+      if (g_pot == 2 ? (Eprev_check - E < 1e-9) : (E > 0.999 * Eprev_check && E > 1e-10)) { it++; break; }
       Eprev_check = E;
     }
   }
@@ -432,6 +463,91 @@ int main(int argc, char **argv) {
   }
 
 
+
+
+  if (!strcmp(mode, "mmhop")) {
+    // basin hopping on the minimax objective (max cos) at fixed N
+    double T = atof(argval(argc, argv, "-T", "1800"));
+    double h1 = atof(argval(argc, argv, "-h1", "20000"));
+    double tt0 = now();
+    double *Xc = malloc((size_t)N * S * sizeof(double));
+    char fnb[512];
+    snprintf(fnb, sizeof fnb, "%s_hop_N%d_s%llu.txt", out, N, (unsigned long long)seed);
+    double cur = maxcos(X, N, NULL, NULL), best = cur;
+    printf("start maxcos %.10f\n", cur); fflush(stdout);
+    long it = 0;
+    while (now() - tt0 < T) {
+      it++;
+      memcpy(Xc, X, (size_t)N * S * sizeof(double));
+      int pi, pj; maxcos(X, N, &pi, &pj);
+      double u = runif();
+      int mv;
+      if (u < 0.4) {
+        mv = 0;
+        int sel = (runif() < 0.5) ? pi : pj;
+        if (sel < g_nfix) sel = (sel == pi) ? pj : pi;
+        if (sel >= g_nfix) { double y[S]; deepest_hole(X, N, sel, y, 4000, 4); memcpy(X + sel * S, y, sizeof y); }
+      } else if (u < 0.7) {
+        mv = 1;
+        double sg = 0.003 * pow(10, runif() * 1.3);
+        for (int i = g_nfix; i < N; i++) { for (int k = 0; k < g_dim; k++) X[i * S + k] += sg * rgauss() / sqrt(g_dim); normalize(X + i * S); }
+      } else {
+        mv = 2;
+        double sg = 0.02 + 0.08 * runif();
+        for (int i = g_nfix; i < N; i++) if (dot(X + i * S, X + pi * S) > 0.2 || dot(X + i * S, X + pj * S) > 0.2) { for (int k = 0; k < g_dim; k++) X[i * S + k] += sg * rgauss() / sqrt(g_dim); normalize(X + i * S); }
+      }
+      // short warm penalty relax at slightly relaxed threshold then LSE continuation
+      { g_pot = 0; ctx_t c; ctx_init(&c, N, cur - 0.002); relax(&c, X, 3000, 1e-30); ctx_free(&c); }
+      for (double hh = 400; hh <= h1 * 1.0001; hh *= 2) {
+        g_pot = 2; g_h = hh; ctx_t c; ctx_init(&c, N, 0.4); c.skin = 0.08; relax(&c, X, 2000, -1e300); ctx_free(&c);
+      }
+      double nm = maxcos(X, N, NULL, NULL);
+      if (nm < cur) { cur = nm; if (nm < best) { best = nm; save(fnb, X, N); } }
+      else memcpy(X, Xc, (size_t)N * S * sizeof(double));
+      printf("it %ld mv %d new %.8f cur %.8f best %.8f t=%.0f\n", it, mv, nm, cur, best, now() - tt0); fflush(stdout);
+      if (best <= 0.5) break;
+    }
+    printf("final best %.12f\n", best);
+    return 0;
+  }
+  if (!strcmp(mode, "minimax")) {
+    // optional: add points at holes, then Riesz warmup and LSE continuation on max cos
+    int add = atoi(argval(argc, argv, "-a", "0"));
+    double hmax = atof(argval(argc, argv, "-hmax", "200000"));
+    double rh = atof(argval(argc, argv, "-rh", "400"));
+    int cap = N + add + 8;
+    X = realloc(X, (size_t)cap * S * sizeof(double));
+    for (int r = 0; r < add; r++) {
+      double y[S];
+      double v = deepest_hole(X, N, -1, y, 20000, 10);
+      memcpy(X + (size_t)N * S, y, sizeof y);
+      N++;
+    }
+    for (double hh = 6; hh <= rh; hh *= 1.3) {
+      g_pot = 1; g_h = hh;
+      ctx_t c; ctx_init(&c, N, 0.3);
+      relax(&c, X, 3000, 0);
+      ctx_free(&c);
+    }
+    mc = maxcos(X, N, NULL, NULL);
+    printf("riesz warmup maxcos=%.8f\n", mc); fflush(stdout);
+    char fnb[512];
+    snprintf(fnb, sizeof fnb, "%s_mm_N%d_s%llu.txt", out, N, (unsigned long long)seed);
+    double best = mc;
+    save(fnb, X, N);
+    for (double hh = 200; hh <= hmax * 1.0001; hh *= 1.5) {
+      g_pot = 2; g_h = hh;
+      ctx_t c; ctx_init(&c, N, 0.4);
+      c.skin = 0.08;
+      relax(&c, X, 4000, -1e300);
+      ctx_free(&c);
+      mc = maxcos(X, N, NULL, NULL);
+      printf("lse h=%.0f maxcos=%.10f\n", hh, mc); fflush(stdout);
+      if (mc < best) { best = mc; save(fnb, X, N); }
+    }
+    printf("final N=%d best maxcos=%.12f\n", N, best);
+    return 0;
+  }
   if (!strcmp(mode, "riesz")) {
     int add = atoi(argval(argc, argv, "-a", "1"));
     double tcut = atof(argval(argc, argv, "-tc", "0.3"));
