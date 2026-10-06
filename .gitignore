@@ -7,3 +7,5 @@ shells/*.npy
 __pycache__/
 shells/*.json
 shells/*.vec
+misw
+kiss3

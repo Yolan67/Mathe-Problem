@@ -24,6 +24,8 @@
 
 static int g_dim = D;
 static int g_nfix = 0;  // first g_nfix points are fixed
+static int g_pot = 0;    // 0: penalty (cc-t)^2, 1: shifted Riesz in q=(1-t)/(1-cc)
+static double g_h = 20;
 
 // ---------------------------------------------------------------- rng
 static uint64_t rs[2];
@@ -168,9 +170,17 @@ static double eval(ctx_t *c, const double *Y, double *Xn, double *G) {
     const double *xi = Xn + i * S, *xj = Xn + j * S;
     double cc = dot(xi, xj);
     if (cc > t) {
-      double d = cc - t;
-      E += d * d;
-      double w = 2 * d;
+      double w;
+      if (g_pot == 1) {
+        double q = (1 - t) / (1 - cc);
+        double qh1 = pow(q, g_h - 1);
+        E += qh1 * q - 1 - g_h * (q - 1);
+        w = g_h * (qh1 - 1) * q / (1 - cc);
+      } else {
+        double d = cc - t;
+        E += d * d;
+        w = 2 * d;
+      }
       double *gi = G + i * S, *gj = G + j * S;
       for (int k = 0; k < S; k++) { gi[k] += w * xj[k]; gj[k] += w * xi[k]; }
     }
@@ -418,6 +428,84 @@ int main(int argc, char **argv) {
       fflush(stdout);
     }
     fclose(fo);
+    return 0;
+  }
+
+
+  if (!strcmp(mode, "riesz")) {
+    int add = atoi(argval(argc, argv, "-a", "1"));
+    double tcut = atof(argval(argc, argv, "-tc", "0.3"));
+    double noise = atof(argval(argc, argv, "-noise", "0"));
+    int cap = N + add + 8;
+    X = realloc(X, (size_t)cap * S * sizeof(double));
+    for (int r = 0; r < add; r++) {
+      double y[S];
+      double v = deepest_hole(X, N, -1, y, 20000, 10);
+      memcpy(X + (size_t)N * S, y, sizeof y);
+      N++;
+      printf("added hole %.6f\n", v);
+    }
+    if (noise > 0)
+      for (int i = g_nfix; i < N; i++) { for (int k = 0; k < g_dim; k++) X[i * S + k] += noise * rgauss() / sqrt(g_dim); normalize(X + i * S); }
+    double hmax = atof(argval(argc, argv, "-hmax", "250"));
+    char fnb[512];
+    snprintf(fnb, sizeof fnb, "%s_riesz_N%d_s%llu.txt", out, N, (unsigned long long)seed);
+    for (double hh = 6; hh <= hmax * 1.0001; hh *= 1.25) {
+      g_pot = 1; g_h = hh;
+      ctx_t c; ctx_init(&c, N, tcut);
+      relax_res r = relax(&c, X, 50000, 0);
+      mc = maxcos(X, N, NULL, NULL);
+      printf("h=%.0f E=%.4e maxcos=%.6f it=%d\n", g_h, r.E, mc, r.it);
+      fflush(stdout);
+      ctx_free(&c);
+      save(fnb, X, N);
+    }
+    g_pot = 0;
+    ctx_t c; ctx_init(&c, N, 0.5);
+    relax_res r = relax(&c, X, 200000, 1e-30);
+    mc = maxcos(X, N, NULL, NULL);
+    printf("final N=%d E=%.3e maxcos=%.12f\n", N, r.E, mc);
+    char fn[512];
+    snprintf(fn, sizeof fn, "%s_N%d_s%llu.txt", out, N, (unsigned long long)seed);
+    save(fn, X, N);
+    return 0;
+  }
+  if (!strcmp(mode, "anneal")) {
+    // N0 points + 'add' new points at deepest holes; threshold schedule t0 -> 0.5
+    int add = atoi(argval(argc, argv, "-a", "1"));
+    double t0s = atof(argval(argc, argv, "-t0", "0.56"));
+    int steps = atoi(argval(argc, argv, "-steps", "60"));
+    double noise = atof(argval(argc, argv, "-noise", "0"));
+    int cap = N + add + 8;
+    X = realloc(X, (size_t)cap * S * sizeof(double));
+    for (int r = 0; r < add; r++) {
+      double y[S];
+      double v = deepest_hole(X, N, -1, y, 20000, 10);
+      memcpy(X + (size_t)N * S, y, sizeof y);
+      N++;
+      printf("added hole %.6f\n", v);
+    }
+    if (noise > 0)
+      for (int i = g_nfix; i < N; i++) { for (int k = 0; k < g_dim; k++) X[i * S + k] += noise * rgauss() / sqrt(g_dim); normalize(X + i * S); }
+    double tt0 = now();
+    for (int st = 0; st <= steps; st++) {
+      double t = t0s + (0.5 - t0s) * st / (double)steps;
+      ctx_t c;
+      ctx_init(&c, N, t);
+      relax_res r = relax(&c, X, 20000, 1e-28);
+      mc = maxcos(X, N, NULL, NULL);
+      printf("step %d t=%.5f E=%.3e maxcos=%.6f (%.0fs)\n", st, t, r.E, mc, now() - tt0);
+      fflush(stdout);
+      ctx_free(&c);
+    }
+    // final polish at 0.5
+    ctx_t c; ctx_init(&c, N, 0.5);
+    relax_res r = relax(&c, X, 200000, 1e-30);
+    mc = maxcos(X, N, NULL, NULL);
+    printf("final N=%d E=%.3e maxcos=%.12f\n", N, r.E, mc);
+    char fn[512];
+    snprintf(fn, sizeof fn, "%s_N%d_s%llu.txt", out, N, (unsigned long long)seed);
+    save(fn, X, N);
     return 0;
   }
   if (!strcmp(mode, "grow")) {
