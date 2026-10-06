@@ -1,0 +1,7 @@
+loaded 604 points, maxcos 0.873641579099961 (325,477)
+initial relax E=1.0770e+00
+it 20 N=604 E=4.2352e-01 best=4.2352e-01 acc=7 mv=2 t=5
+it 40 N=604 E=7.2566e-02 best=7.2566e-02 acc=17 mv=1 t=12
+it 60 N=604 E=7.2484e-02 best=7.2484e-02 acc=23 mv=1 t=21
+SUCCESS N=604 maxcos=0.500000000000010 iter=74 time=27.0 -> runs/melt/g5_N604_s1.txt
+done N=604 bestE=6.8711e-27

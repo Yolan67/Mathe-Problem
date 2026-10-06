@@ -1,0 +1,6 @@
+heights [np.float64(-1.0), np.float64(-0.5), np.float64(0.0), np.float64(0.5), np.float64(1.0)]
+E 386 U 109 L 109
+column classes [1, 6, 1, 2]
+perms tried 1440 Aut(E) signed perms: 1024 time 4
+distinct lower layers g(L): 1
+variants (contacts, antipodal pts, |gL & L|): [((22904, 604, 109), 1)]
