@@ -641,6 +641,81 @@ int main(int argc, char **argv) {
     printf("final N=%d best maxcos=%.12f\n", N, best);
     return 0;
   }
+
+  if (!strcmp(mode, "breathe")) {
+    // grand-canonical style search: alternate insertion (holes + short basin hopping) and deletion
+    // (remove highest-energy points until valid).  Saves every valid configuration with N > bestN.
+    double T = atof(argval(argc, argv, "-T", "3600"));
+    int up = atoi(argval(argc, argv, "-up", "1"));
+    int extra = atoi(argval(argc, argv, "-extra", "2"));
+    int hopit = atoi(argval(argc, argv, "-hop", "40"));
+    double t0 = now();
+    int cap = N + 64;
+    X = realloc(X, (size_t)cap * S * sizeof(double));
+    double *Xc = malloc((size_t)cap * S * sizeof(double));
+    double *le = malloc(cap * sizeof(double));
+    int bestN = N; long cyc = 0;
+    { ctx_t c; ctx_init(&c, N, 0.5); relax(&c, X, 20000, 1e-28); ctx_free(&c); }
+    printf("start N=%d maxcos=%.12f\n", N, maxcos(X, N, NULL, NULL)); fflush(stdout);
+    while (now() - t0 < T) {
+      cyc++;
+      // insertion
+      for (int r = 0; r < up && N < cap - 1; r++) {
+        double y[S]; deepest_hole(X, N, -1, y, 3000, 3);
+        memcpy(X + (size_t)N * S, y, sizeof y); N++;
+      }
+      ctx_t c; ctx_init(&c, N, 0.5);
+      relax_res rr = relax(&c, X, 20000, 1e-26);
+      double E = rr.E;
+      for (int it = 0; it < hopit && E > 1e-26; it++) {
+        memcpy(Xc, X, (size_t)N * S * sizeof(double));
+        double u = runif();
+        if (u < 0.4) {   // relocate a high-energy point to a hole
+          memset(le, 0, N * sizeof(double));
+          for (int i = 0; i < N; i++) for (int j = i + 1; j < N; j++) { double cc = dot(X + i * S, X + j * S); if (cc > 0.5) { double d = (cc - 0.5) * (cc - 0.5); le[i] += d; le[j] += d; } }
+          double tot = 0; for (int i = g_nfix; i < N; i++) tot += le[i];
+          double q = runif() * tot; int sel = N - 1;
+          for (int i = g_nfix; i < N; i++) { q -= le[i]; if (q <= 0) { sel = i; break; } }
+          double y[S]; deepest_hole(X, N, sel, y, 2000, 2); memcpy(X + sel * S, y, sizeof y);
+        } else if (u < 0.75) {
+          double sg = 1e-3 * pow(50.0, runif());
+          for (int i = g_nfix; i < N; i++) { for (int k = 0; k < g_dim; k++) X[i * S + k] += sg * rgauss() / sqrt(g_dim); normalize(X + i * S); }
+        } else {
+          int cen = g_nfix + rnext() % (N - g_nfix); double sg = 0.05 + 0.1 * runif();
+          for (int i = g_nfix; i < N; i++) if (dot(X + i * S, X + cen * S) > 0.3) { for (int k = 0; k < g_dim; k++) X[i * S + k] += sg * rgauss() / sqrt(g_dim); normalize(X + i * S); }
+        }
+        relax_res r2 = relax(&c, X, 20000, 1e-26);
+        if (r2.E < E) E = r2.E; else memcpy(X, Xc, (size_t)N * S * sizeof(double));
+      }
+      ctx_free(&c);
+      if (E <= 1e-26) {
+        double mc = maxcos(X, N, NULL, NULL);
+        if (N > bestN || (N == bestN && cyc % 20 == 0)) {
+          char fn[512]; snprintf(fn, sizeof fn, "%s_br_N%d_s%llu.txt", out, N, (unsigned long long)seed);
+          save(fn, X, N);
+        }
+        if (N > bestN) { bestN = N; printf("NEW BEST N=%d maxcos=%.15f cycle %ld t=%.0f\n", N, mc, cyc, now() - t0); }
+        continue;
+      }
+      // deletion: remove highest-energy points until valid, then 'extra' more random high-energy ones
+      int removed = 0;
+      while (1) {
+        ctx_t c2; ctx_init(&c2, N, 0.5); relax_res r3 = relax(&c2, X, 20000, 1e-28); ctx_free(&c2);
+        if (r3.E < 1e-26 && removed >= extra) break;
+        memset(le, 0, N * sizeof(double));
+        for (int i = 0; i < N; i++) for (int j = i + 1; j < N; j++) { double cc = dot(X + i * S, X + j * S); if (cc > 0.5 - 0.02) { double d = (cc - 0.48) * (cc - 0.48); le[i] += d; le[j] += d; } }
+        int w = g_nfix; for (int i = g_nfix; i < N; i++) if (le[i] > le[w]) w = i;
+        if (r3.E < 1e-26) { // remove a random point among top-energy ones for restructuring
+          int cand[8], nc = 0; for (int rep = 0; rep < 8; rep++) { int i = g_nfix + rnext() % (N - g_nfix); cand[nc++] = i; }
+          w = cand[0]; for (int k = 1; k < nc; k++) if (le[cand[k]] > le[w]) w = cand[k];
+        }
+        memmove(X + (size_t)w * S, X + (size_t)(w + 1) * S, (size_t)(N - w - 1) * S * sizeof(double)); N--; removed++;
+      }
+      printf("cycle %ld: removed %d -> N=%d valid (best %d) t=%.0f\n", cyc, removed, N, bestN, now() - t0); fflush(stdout);
+    }
+    printf("done best N=%d\n", bestN);
+    return 0;
+  }
   if (!strcmp(mode, "minimax")) {
     // optional: add points at holes, then Riesz warmup and LSE continuation on max cos
     int add = atoi(argval(argc, argv, "-a", "0"));

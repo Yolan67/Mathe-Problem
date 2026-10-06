@@ -99,6 +99,10 @@ Each pair-slice R^5 then contains a full D5 root system (40 = kissing number of 
   841 exists), i.e. the method gets close only when the starting family is flexible.  The 604 family is not.
 * K12/G33 family (Ganzhinov 592, only 4590 exact contacts): continuous growth reproduces 593 within ~2 minutes
   (AlphaEvolve's step); 594 stalls at penalty energy ~4e-5.
+* Breathing search (`kiss breathe`: insert at holes + short basin hopping, on failure delete highest-energy
+  points until valid; from the 604, the restacked 604, a frame variant and the K12-type 593): after the first
+  failed insertion the deletion phase removes 10-57 points and regrowth stalls at 582-595 -- consistent with the
+  melt tests (grow heals a 5% melt of the 604 but not a 10% melt).  No size above the start was reached.
 
 ## Layout
 * `validate/` exact validators · `src/` C search engines (`kiss.c` continuous, `misg.c`/`misw.c`/`mis.c` MIS)

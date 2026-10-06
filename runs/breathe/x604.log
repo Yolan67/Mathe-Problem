@@ -1,0 +1,10 @@
+loaded 604 points, maxcos 0.500000000000000 (496,593)
+start N=604 maxcos=0.500000000000
+cycle 1: removed 2 -> N=603 valid (best 604) t=18
+cycle 3: removed 2 -> N=603 valid (best 604) t=41
+cycle 4: removed 2 -> N=602 valid (best 604) t=61
+cycle 7: removed 2 -> N=603 valid (best 604) t=87
+cycle 8: removed 2 -> N=602 valid (best 604) t=106
+cycle 9: removed 2 -> N=601 valid (best 604) t=126
+cycle 10: removed 52 -> N=550 valid (best 604) t=165
+cycle 55: removed 10 -> N=585 valid (best 604) t=804
