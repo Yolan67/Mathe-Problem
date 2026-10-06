@@ -1,0 +1,7 @@
+L10 final best 604
+core final best 592
+slices final best 508
+L8 final best 604
+L9 final best 604
+D8 final best 492
+cells final best 580

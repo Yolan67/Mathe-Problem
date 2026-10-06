@@ -1,0 +1,18 @@
+graph n=100914 m=227973624
+excluded 96 vertices
+initial 538
+it 200000 cur 535 best 538 t=77
+it 400000 cur 533 best 538 t=197
+it 600000 cur 533 best 538 t=269
+it 800000 cur 533 best 538 t=387
+it 1000000 cur 532 best 538 t=472
+it 1200000 cur 533 best 538 t=559
+it 1400000 cur 533 best 538 t=631
+it 1600000 cur 533 best 538 t=698
+it 1800000 cur 532 best 538 t=763
+it 2000000 cur 532 best 538 t=832
+it 2200000 cur 535 best 538 t=924
+it 2400000 cur 535 best 538 t=1002
+it 2600000 cur 535 best 538 t=1072
+it 2800000 cur 532 best 538 t=1138
+final best 538

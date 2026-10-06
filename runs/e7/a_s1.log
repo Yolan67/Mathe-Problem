@@ -1,0 +1,18 @@
+graph n=55986 m=65556600
+initial 474
+best 476 it 41 t=0.0
+best 481 it 47 t=0.0
+best 483 it 142 t=0.0
+best 484 it 193 t=0.1
+best 486 it 241 t=0.1
+best 489 it 243 t=0.1
+best 490 it 930 t=0.3
+best 494 it 1515 t=0.5
+best 495 it 3380 t=0.9
+best 498 it 3488 t=0.9
+best 499 it 64377 t=14.1
+best 502 it 64416 t=14.1
+it 200000 cur 496 best 502 t=43
+best 505 it 247956 t=53.6
+best 506 it 248316 t=53.7
+it 400000 cur 502 best 506 t=87

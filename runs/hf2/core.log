@@ -1,0 +1,16 @@
+graph n=100914 m=227973624
+excluded 12 vertices
+initial 592
+it 200000 cur 587 best 592 t=105
+it 400000 cur 587 best 592 t=230
+it 600000 cur 592 best 592 t=340
+it 800000 cur 588 best 592 t=462
+it 1000000 cur 585 best 592 t=566
+it 1200000 cur 585 best 592 t=648
+it 1400000 cur 585 best 592 t=728
+it 1600000 cur 591 best 592 t=808
+it 1800000 cur 591 best 592 t=909
+it 2000000 cur 587 best 592 t=1007
+it 2200000 cur 588 best 592 t=1091
+it 2400000 cur 585 best 592 t=1170
+final best 592
