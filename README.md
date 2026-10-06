@@ -8,6 +8,7 @@ Baseline given at the start: N = 593 (AlphaEvolve 2025).
 | N   | status | file | certificate |
 |-----|--------|------|-------------|
 | **604** | exact, valid | `records/N604/config_exact.txt` (= `best/best_exact.txt`) | exact arithmetic in Q(√2), all norms exactly 4, max inner product exactly 1/2 |
+| 604 | exact, valid, non-antipodal (restacked, not isometric to the above) | `records/N604_restacked/config_exact.txt` | exact arithmetic in Q(√2), 22840 contacts |
 | 600 | exact, valid | `records/N600/config_exact.txt` | exact rational arithmetic |
 | 598 | exact, valid | `records/N598/config_exact.txt` | exact arithmetic in Q(√2) |
 
