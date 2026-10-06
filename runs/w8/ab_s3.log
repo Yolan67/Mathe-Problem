@@ -1,0 +1,27 @@
+graph n=42460 m=24837120
+initial 387
+best 391 it 1 t=0.0
+best 393 it 5 t=0.0
+best 394 it 15 t=0.0
+best 396 it 24 t=0.0
+best 398 it 38 t=0.0
+best 399 it 41 t=0.0
+best 400 it 60 t=0.0
+best 401 it 72 t=0.0
+best 402 it 225 t=0.0
+best 403 it 434 t=0.0
+best 404 it 463 t=0.1
+best 405 it 534 t=0.1
+best 406 it 630 t=0.1
+best 407 it 664 t=0.1
+best 408 it 693 t=0.1
+best 409 it 1270 t=0.1
+best 410 it 1296 t=0.1
+best 411 it 3513 t=0.5
+best 412 it 14466 t=1.6
+best 413 it 17383 t=1.9
+best 414 it 84740 t=8.8
+it 200000 cur 407 best 414 t=19
+it 400000 cur 405 best 414 t=38
+best 415 it 400496 t=37.6
+it 600000 cur 407 best 415 t=55

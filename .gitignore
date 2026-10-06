@@ -16,3 +16,6 @@ kissF
 kissS
 cyclic
 kissQ
+kissP
+runs/**/*.graph
+runs/**/*.npy

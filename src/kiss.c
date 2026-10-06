@@ -27,14 +27,34 @@ static int g_nfix = 0;  // first g_nfix points are fixed
 static int g_pot = 0;
 static uint8_t *g_fib = NULL;  // fiber points: T-part (coords 8..10) fixed, S-part free with fixed length
 static double *g_w = NULL, *g_r = NULL;
+static int g_prod = 0;            // product mode: T-part direction free with fixed radius g_rho
+static double *g_rho = NULL, *g_nT = NULL;
 static void fiber_fix(double *Y, int N) {
   if (!g_fib) return;
   for (int i = 0; i < N; i++) if (g_fib[i]) {
     double nu = 0; for (int k = 0; k < 8; k++) nu += Y[i * S + k] * Y[i * S + k];
     nu = sqrt(nu); if (nu < 1e-300) { Y[i * S] = 1; nu = 1; }
     for (int k = 0; k < 8; k++) Y[i * S + k] *= g_r[i] / nu;
-    for (int k = 8; k < 11; k++) Y[i * S + k] = g_w[i * 3 + k - 8];
+    if (g_prod) {
+      double nt = 0; for (int k = 8; k < 11; k++) nt += Y[i * S + k] * Y[i * S + k];
+      nt = sqrt(nt); if (nt < 1e-300) { Y[i * S + 8] = 1; nt = 1; }
+      for (int k = 8; k < 11; k++) Y[i * S + k] *= g_rho[i] / nt;
+    } else
+      for (int k = 8; k < 11; k++) Y[i * S + k] = g_w[i * 3 + k - 8];
   }
+}
+// gradient of a fibered point wrt its unnormalized coordinates (in place)
+static void fib_grad(int i, double *g, const double *x, double nu) {
+  double gu = 0; for (int k = 0; k < 8; k++) gu += g[k] * x[k];
+  double r2_ = g_r[i] * g_r[i];
+  for (int k = 0; k < 8; k++) g[k] = (g[k] - gu * x[k] / r2_) * g_r[i] / nu;
+  if (g_prod) {
+    double gt = 0; for (int k = 8; k < 11; k++) gt += g[k] * x[k];
+    double p2 = g_rho[i] * g_rho[i];
+    for (int k = 8; k < 11; k++) g[k] = (g[k] - gt * x[k] / p2) * g_rho[i] / g_nT[i];
+    for (int k = 11; k < S; k++) g[k] = 0;
+  } else
+    for (int k = 8; k < S; k++) g[k] = 0;
 }    // 0: penalty (cc-t)^2, 1: shifted Riesz in q=(1-t)/(1-cc)
 static double g_h = 20;
 static double g_sq = 0;   // squeeze penalty on coordinate g_sqk
@@ -175,7 +195,12 @@ static double eval(ctx_t *c, const double *Y, double *Xn, double *G) {
       double nu = 0; for (int k = 0; k < 8; k++) nu += Y[i * S + k] * Y[i * S + k];
       nu = sqrt(nu); nrm[i] = nu;
       for (int k = 0; k < 8; k++) Xn[i * S + k] = Y[i * S + k] / nu * g_r[i];
-      for (int k = 8; k < 11; k++) Xn[i * S + k] = g_w[i * 3 + k - 8];
+      if (g_prod) {
+        double nt = 0; for (int k = 8; k < 11; k++) nt += Y[i * S + k] * Y[i * S + k];
+        nt = sqrt(nt); g_nT[i] = nt;
+        for (int k = 8; k < 11; k++) Xn[i * S + k] = Y[i * S + k] / nt * g_rho[i];
+      } else
+        for (int k = 8; k < 11; k++) Xn[i * S + k] = g_w[i * 3 + k - 8];
       Xn[i * S + 11] = 0;
       continue;
     }
@@ -213,13 +238,7 @@ static double eval(ctx_t *c, const double *Y, double *Xn, double *G) {
     memset(G, 0, (size_t)g_nfix * S * sizeof(double));
     for (int i = g_nfix; i < N; i++) {
       double *g = G + i * S; const double *x = Xn + i * S;
-      if (g_fib && g_fib[i]) {
-        double gu = 0; for (int k = 0; k < 8; k++) gu += g[k] * x[k];
-        double r2_ = g_r[i] * g_r[i];
-        for (int k = 0; k < 8; k++) g[k] = (g[k] - gu * x[k] / r2_) * g_r[i] / nrm[i];
-        for (int k = 8; k < S; k++) g[k] = 0;
-        continue;
-      }
+      if (g_fib && g_fib[i]) { fib_grad(i, g, x, nrm[i]); continue; }
       double gx = dot(g, x);
       for (int k = 0; k < S; k++) g[k] = (g[k] - gx * x[k]) / nrm[i];
     }
@@ -253,13 +272,7 @@ static double eval(ctx_t *c, const double *Y, double *Xn, double *G) {
   for (int i = g_nfix; i < N; i++) {
     double *g = G + i * S;
     const double *x = Xn + i * S;
-    if (g_fib && g_fib[i]) {
-      double gu = 0; for (int k = 0; k < 8; k++) gu += g[k] * x[k];
-      double r2_ = g_r[i] * g_r[i];
-      for (int k = 0; k < 8; k++) g[k] = (g[k] - gu * x[k] / r2_) * g_r[i] / nrm[i];
-      for (int k = 8; k < S; k++) g[k] = 0;
-      continue;
-    }
+    if (g_fib && g_fib[i]) { fib_grad(i, g, x, nrm[i]); continue; }
     double gx = dot(g, x);
     for (int k = 0; k < S; k++) g[k] = (g[k] - gx * x[k]) / nrm[i];
   }
@@ -476,18 +489,22 @@ int main(int argc, char **argv) {
   double *X = load(in, &N);
   const char *fibf = argval(argc, argv, "-fib", NULL);
   if (fibf) {
-    int capf = N + 64;
+    int capf = N + 1100;
     g_fib = calloc(capf, 1); g_w = calloc((size_t)capf * 3, sizeof(double)); g_r = calloc(capf, sizeof(double));
+    g_rho = calloc(capf, sizeof(double)); g_nT = calloc(capf, sizeof(double));
+    g_prod = atoi(argval(argc, argv, "-prod", "0"));
     FILE *ff = fopen(fibf, "r"); int ii; int nf = 0;
     while (fscanf(ff, "%d", &ii) == 1) if (ii >= 0 && ii < N) { g_fib[ii] = 1; nf++; }
     fclose(ff);
     for (int i = 0; i < N; i++) {
       double rr = 0; for (int k = 0; k < 8; k++) rr += X[i * S + k] * X[i * S + k];
       g_r[i] = sqrt(rr); for (int k = 0; k < 3; k++) g_w[i * 3 + k] = X[i * S + 8 + k];
+      g_rho[i] = sqrt(fmax(0, 1 - rr)); g_nT[i] = g_rho[i] > 0 ? g_rho[i] : 1;
+      if (g_prod && g_rho[i] < 1e-9) g_fib[i] = 0;
       if (g_fib[i] && g_r[i] < 1e-9) g_fib[i] = 0;  // pure-T points cannot be fibered
     }
     if (atoi(argval(argc, argv, "-randu", "0")))
-      for (int i = 0; i < N; i++) if (g_fib[i]) { for (int k = 0; k < 8; k++) X[i * S + k] = rgauss(); }
+      for (int i = 0; i < N; i++) if (g_fib[i]) { for (int k = 0; k < (g_prod ? 11 : 8); k++) X[i * S + k] = rgauss(); }
     fiber_fix(X, N);
     printf("fibered points: %d\n", nf);
   }

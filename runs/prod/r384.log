@@ -1,0 +1,20 @@
+fibered points: 384
+loaded 384 points, maxcos 0.923188203743037 (2,176)
+riesz warmup maxcos=0.50779761
+lse h=200 maxcos=0.5127877525
+lse h=300 maxcos=0.5105040269
+lse h=450 maxcos=0.5091037337
+lse h=675 maxcos=0.5082066611
+lse h=1012 maxcos=0.5076065749
+lse h=1519 maxcos=0.5072589239
+lse h=2278 maxcos=0.5069730242
+lse h=3417 maxcos=0.5067296228
+lse h=5126 maxcos=0.5065956512
+lse h=7689 maxcos=0.5065012207
+lse h=11533 maxcos=0.5064380829
+lse h=17300 maxcos=0.5063956398
+lse h=25949 maxcos=0.5063686020
+lse h=38924 maxcos=0.5063510254
+lse h=58386 maxcos=0.5063380103
+lse h=87579 maxcos=0.5063294430
+final N=384 best maxcos=0.506329442970

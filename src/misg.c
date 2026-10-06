@@ -18,6 +18,7 @@ static int *Fl, *Fpos, Fn;
 static int *Q, Qn; static uint8_t *inQ;
 static long *tabu; static long itg = 0;
 static uint8_t *adjbits = NULL;  // optional dense bit matrix for small n
+static uint8_t *excl = NULL;     // excluded vertices (-x file)
 
 static double now(void) { struct timespec t; clock_gettime(CLOCK_MONOTONIC, &t); return t.tv_sec + 1e-9 * t.tv_nsec; }
 static uint64_t rs[2];
@@ -119,9 +120,14 @@ int main(int argc, char **argv) {
   Q = malloc(n * sizeof(int)); inQ = calloc(n, 1); tabu = calloc(n, sizeof(long));
   Sn = 0; Fn = n; Qn = 0;
   for (int i = 0; i < n; i++) { Spos[i] = -1; Fpos[i] = i; Fl[i] = i; }
+  excl = calloc(n, 1);
+  { const char *xf = argval(argc, argv, "-x", NULL);
+    if (xf) { FILE *g = fopen(xf, "r"); int x, nx = 0;
+      while (fscanf(g, "%d", &x) == 1) if (x >= 0 && x < n && !excl[x]) { excl[x] = 1; tight[x] = 1 << 29; free_del(x); nx++; }
+      fclose(g); if (!quiet) printf("excluded %d vertices\n", nx); } }
   if (init) {
     FILE *g = fopen(init, "r"); int x;
-    while (fscanf(g, "%d", &x) == 1) if (x >= 0 && x < n && !inS[x] && tight[x] == 0) S_add(x);
+    while (fscanf(g, "%d", &x) == 1) if (x >= 0 && x < n && !inS[x] && !excl[x] && tight[x] == 0) S_add(x);
     fclose(g);
   }
   local_search();
@@ -138,7 +144,7 @@ int main(int argc, char **argv) {
       int u = -1;
       // choose a non-solution vertex, biased to low tightness
       for (int tr = 0; tr < 8; tr++) {
-        int c = rnext() % n; if (inS[c]) continue;
+        int c = rnext() % n; if (inS[c] || excl[c]) continue;
         if (u < 0 || tight[c] < tight[u]) u = c;
       }
       if (u < 0) continue;
