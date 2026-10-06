@@ -1,0 +1,12 @@
+loaded 605 points, maxcos 0.601598740176839 (520,604)
+initial relax E=2.9347e-01
+it 20 N=605 E=8.9714e-02 best=8.9714e-02 acc=8 mv=3 t=12
+it 40 N=605 E=8.9713e-02 best=8.9713e-02 acc=11 mv=1 t=14
+it 60 N=605 E=8.9713e-02 best=8.9713e-02 acc=12 mv=0 t=16
+it 80 N=605 E=8.9713e-02 best=8.9713e-02 acc=12 mv=0 t=21
+it 100 N=605 E=8.9713e-02 best=8.9713e-02 acc=13 mv=2 t=26
+it 120 N=605 E=8.9713e-02 best=8.9713e-02 acc=13 mv=2 t=31
+it 140 N=605 E=8.9713e-02 best=8.9713e-02 acc=13 mv=2 t=35
+it 160 N=605 E=8.9713e-02 best=8.9713e-02 acc=13 mv=0 t=42
+it 180 N=605 E=8.9713e-02 best=8.9713e-02 acc=13 mv=2 t=46
+it 200 N=605 E=8.9713e-02 best=8.9713e-02 acc=13 mv=2 t=49
