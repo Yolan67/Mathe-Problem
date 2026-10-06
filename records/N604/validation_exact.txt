@@ -1,0 +1,6 @@
+points: 604  dim: 11
+distinct squared norms: 1  e.g. [('4', '0')]
+max <u_i,u_j>   = 0.50000000000000000000000000000000000000000000000000
+min |u_i - u_j| = 1.00000000000000000000000000000000000000000000000000
+pairs violating: 0
+RESULT: VALID

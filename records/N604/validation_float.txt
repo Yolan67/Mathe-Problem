@@ -1,0 +1,4 @@
+float64 check: N=604 max cos=0.50000000000000011 min dist=0.99999999999999989
+norms^2 range: 4.000000000000000 4.000000000000001
+contacts (|cos-1/2|<1e-12): 22904
+distinct points: 604

@@ -1,0 +1,50 @@
+loaded 600 points, maxcos 0.500000000000000 (0,16)
+added point in hole with maxcos 0.608685 -> N=601
+initial relax E=3.1237e-02
+it 20 N=601 E=3.9009e-03 best=3.9009e-03 acc=7 mv=0 t=4
+it 40 N=601 E=2.0261e-03 best=2.0261e-03 acc=15 mv=2 t=8
+it 60 N=601 E=1.5545e-03 best=1.5545e-03 acc=21 mv=0 t=13
+SUCCESS N=601 maxcos=0.500000000000031 iter=79 time=16.9 -> /tmp/claude-0/runs/g600_N601_s32.txt
+grow to N=602, hole 0.500000, E=3.9897e-24
+it 80 N=602 E=6.4996e-27 best=6.4996e-27 acc=30 mv=2 t=17
+SUCCESS N=602 maxcos=0.500000000000014 iter=80 time=17.0 -> /tmp/claude-0/runs/g600_N602_s32.txt
+grow to N=603, hole 0.577350, E=3.0514e-01
+SUCCESS N=603 maxcos=0.500000000000024 iter=82 time=17.3 -> /tmp/claude-0/runs/g600_N603_s32.txt
+grow to N=604, hole 0.500000, E=7.3031e-27
+SUCCESS N=604 maxcos=0.500000000000009 iter=82 time=17.4 -> /tmp/claude-0/runs/g600_N604_s32.txt
+grow to N=605, hole 0.600971, E=8.1365e-02
+it 100 N=605 E=8.1365e-02 best=8.1365e-02 acc=35 mv=0 t=21
+it 120 N=605 E=8.1365e-02 best=8.1365e-02 acc=37 mv=0 t=25
+it 140 N=605 E=8.1365e-02 best=8.1365e-02 acc=37 mv=0 t=28
+it 160 N=605 E=8.1365e-02 best=8.1365e-02 acc=37 mv=2 t=32
+it 180 N=605 E=8.1365e-02 best=8.1365e-02 acc=37 mv=1 t=35
+it 200 N=605 E=8.1365e-02 best=8.1365e-02 acc=37 mv=0 t=40
+it 220 N=605 E=8.1365e-02 best=8.1365e-02 acc=37 mv=2 t=44
+it 240 N=605 E=8.1365e-02 best=8.1365e-02 acc=37 mv=0 t=47
+it 260 N=605 E=8.1365e-02 best=8.1365e-02 acc=37 mv=1 t=50
+it 280 N=605 E=8.1365e-02 best=8.1365e-02 acc=37 mv=3 t=55
+it 300 N=605 E=8.1365e-02 best=8.1365e-02 acc=37 mv=1 t=58
+it 320 N=605 E=8.1365e-02 best=8.1365e-02 acc=38 mv=2 t=61
+it 340 N=605 E=8.1365e-02 best=8.1365e-02 acc=38 mv=0 t=66
+it 360 N=605 E=8.1365e-02 best=8.1365e-02 acc=38 mv=2 t=69
+it 380 N=605 E=8.1365e-02 best=8.1365e-02 acc=38 mv=2 t=73
+it 400 N=605 E=8.1365e-02 best=8.1365e-02 acc=38 mv=2 t=78
+it 420 N=605 E=8.1365e-02 best=8.1365e-02 acc=38 mv=3 t=81
+it 440 N=605 E=8.1365e-02 best=8.1365e-02 acc=38 mv=3 t=86
+it 460 N=605 E=8.1365e-02 best=8.1365e-02 acc=38 mv=1 t=90
+it 480 N=605 E=8.1365e-02 best=8.1365e-02 acc=38 mv=2 t=94
+it 500 N=605 E=8.1365e-02 best=8.1365e-02 acc=38 mv=0 t=98
+it 520 N=605 E=8.1365e-02 best=8.1365e-02 acc=38 mv=2 t=102
+it 540 N=605 E=8.1365e-02 best=8.1365e-02 acc=38 mv=2 t=105
+it 560 N=605 E=8.1365e-02 best=8.1365e-02 acc=39 mv=1 t=109
+it 580 N=605 E=8.1365e-02 best=8.1365e-02 acc=40 mv=2 t=114
+it 600 N=605 E=8.1365e-02 best=8.1365e-02 acc=40 mv=0 t=118
+it 620 N=605 E=8.1365e-02 best=8.1365e-02 acc=40 mv=0 t=122
+it 640 N=605 E=8.1365e-02 best=8.1365e-02 acc=40 mv=2 t=125
+it 660 N=605 E=8.1365e-02 best=8.1365e-02 acc=40 mv=0 t=130
+it 680 N=605 E=8.1365e-02 best=8.1365e-02 acc=40 mv=0 t=136
+it 700 N=605 E=8.1365e-02 best=8.1365e-02 acc=40 mv=3 t=140
+it 720 N=605 E=8.1365e-02 best=8.1365e-02 acc=40 mv=0 t=146
+it 740 N=605 E=8.1365e-02 best=8.1365e-02 acc=40 mv=0 t=149
+it 760 N=605 E=8.1365e-02 best=8.1365e-02 acc=40 mv=3 t=152
+it 780 N=605 E=8.1365e-02 best=8.1365e-02 acc=40 mv=2 t=156
