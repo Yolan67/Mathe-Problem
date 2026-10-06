@@ -1,0 +1,12 @@
+group m11pt order 7920 pm=False: 15 orbit types
+  type size  495 dim  3 blocks [8, 2, 1, 1] internal 0.54167
+  type size  396 dim  3 blocks [5, 5, 1, 1] internal 0.56074
+  type size  330 dim  3 blocks [4, 6, 1, 1] internal 0.52179
+  type size  165 dim  2 blocks [8, 3, 1] internal 0.54167
+  type size  110 dim  3 blocks [9, 1, 1, 1] internal 0.50000
+  type size   66 dim  2 blocks [5, 6, 1] internal 0.44137
+  type size   55 dim  2 blocks [2, 9, 1] internal 0.46281
+  type size   11 dim  2 blocks [10, 1, 1] internal 0.49780
+  type size    1 dim  1 blocks [11, 1] internal -2.00000
+usable 4 combos 0
+BEST []

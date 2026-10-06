@@ -1,0 +1,13 @@
+group psl211 order 660 pm=False: 8 orbit types
+  type size  330 dim  5 blocks [2, 2, 2, 2, 2, 2] internal 0.50430
+  type size  220 dim  3 blocks [3, 3, 3, 3] internal 0.56396
+  type size  165 dim  2 blocks [4, 4, 4] internal 0.48452
+  type size  132 dim  3 blocks [5, 5, 1, 1] internal 0.48084
+  type size  110 dim  1 blocks [6, 6] internal 0.33333
+  type size   66 dim  1 blocks [10, 2] internal 0.40000
+  type size   12 dim  1 blocks [11, 1] internal -0.09091
+usable 5 combos 3
+combo [165, 165, 165, 110] dims [2, 2, 2, 1] best 0.819945 (12s)
+combo [165, 132, 132, 110, 66] dims [2, 3, 3, 1, 1] best 0.613554 (14s)
+combo [165, 110, 110, 110, 110] dims [2, 1, 1, 1, 1] best 1.000000 (16s)
+BEST [(np.float64(0.6135544371389111), [165, 132, 132, 110, 66]), (np.float64(0.8199448117850878), [165, 165, 165, 110]), (np.float64(1.0), [165, 110, 110, 110, 110])]

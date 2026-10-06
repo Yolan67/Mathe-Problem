@@ -24,7 +24,18 @@
 
 static int g_dim = D;
 static int g_nfix = 0;  // first g_nfix points are fixed
-static int g_pot = 0;    // 0: penalty (cc-t)^2, 1: shifted Riesz in q=(1-t)/(1-cc)
+static int g_pot = 0;
+static uint8_t *g_fib = NULL;  // fiber points: T-part (coords 8..10) fixed, S-part free with fixed length
+static double *g_w = NULL, *g_r = NULL;
+static void fiber_fix(double *Y, int N) {
+  if (!g_fib) return;
+  for (int i = 0; i < N; i++) if (g_fib[i]) {
+    double nu = 0; for (int k = 0; k < 8; k++) nu += Y[i * S + k] * Y[i * S + k];
+    nu = sqrt(nu); if (nu < 1e-300) { Y[i * S] = 1; nu = 1; }
+    for (int k = 0; k < 8; k++) Y[i * S + k] *= g_r[i] / nu;
+    for (int k = 8; k < 11; k++) Y[i * S + k] = g_w[i * 3 + k - 8];
+  }
+}    // 0: penalty (cc-t)^2, 1: shifted Riesz in q=(1-t)/(1-cc)
 static double g_h = 20;
 
 // ---------------------------------------------------------------- rng
@@ -158,6 +169,14 @@ static double eval(ctx_t *c, const double *Y, double *Xn, double *G) {
   static double *nrm = NULL; static int nc = 0;
   if (nc < N) { nrm = realloc(nrm, N * sizeof(double)); nc = N; }
   for (int i = 0; i < N; i++) {
+    if (g_fib && g_fib[i]) {
+      double nu = 0; for (int k = 0; k < 8; k++) nu += Y[i * S + k] * Y[i * S + k];
+      nu = sqrt(nu); nrm[i] = nu;
+      for (int k = 0; k < 8; k++) Xn[i * S + k] = Y[i * S + k] / nu * g_r[i];
+      for (int k = 8; k < 11; k++) Xn[i * S + k] = g_w[i * 3 + k - 8];
+      Xn[i * S + 11] = 0;
+      continue;
+    }
     double n = sqrt(dot(Y + i * S, Y + i * S));
     nrm[i] = n;
     for (int k = 0; k < S; k++) Xn[i * S + k] = Y[i * S + k] / n;
@@ -191,7 +210,15 @@ static double eval(ctx_t *c, const double *Y, double *Xn, double *G) {
     }
     memset(G, 0, (size_t)g_nfix * S * sizeof(double));
     for (int i = g_nfix; i < N; i++) {
-      double *g = G + i * S; const double *x = Xn + i * S; double gx = dot(g, x);
+      double *g = G + i * S; const double *x = Xn + i * S;
+      if (g_fib && g_fib[i]) {
+        double gu = 0; for (int k = 0; k < 8; k++) gu += g[k] * x[k];
+        double r2_ = g_r[i] * g_r[i];
+        for (int k = 0; k < 8; k++) g[k] = (g[k] - gu * x[k] / r2_) * g_r[i] / nrm[i];
+        for (int k = 8; k < S; k++) g[k] = 0;
+        continue;
+      }
+      double gx = dot(g, x);
       for (int k = 0; k < S; k++) g[k] = (g[k] - gx * x[k]) / nrm[i];
     }
     return E;
@@ -221,6 +248,13 @@ static double eval(ctx_t *c, const double *Y, double *Xn, double *G) {
   for (int i = g_nfix; i < N; i++) {
     double *g = G + i * S;
     const double *x = Xn + i * S;
+    if (g_fib && g_fib[i]) {
+      double gu = 0; for (int k = 0; k < 8; k++) gu += g[k] * x[k];
+      double r2_ = g_r[i] * g_r[i];
+      for (int k = 0; k < 8; k++) g[k] = (g[k] - gu * x[k] / r2_) * g_r[i] / nrm[i];
+      for (int k = 8; k < S; k++) g[k] = 0;
+      continue;
+    }
     double gx = dot(g, x);
     for (int k = 0; k < S; k++) g[k] = (g[k] - gx * x[k]) / nrm[i];
   }
@@ -241,6 +275,7 @@ static relax_res relax(ctx_t *c, double *Y, int maxit, double Etol) {
   int head = 0, mem = 0;
   // renormalize
   for (int i = 0; i < N; i++) normalize(Y + i * S);
+  fiber_fix(Y, N);
   nl_build(c, Y);
   double E = eval(c, Y, Xn, G);
   int it;
@@ -330,7 +365,7 @@ static relax_res relax(ctx_t *c, double *Y, int maxit, double Etol) {
         double q = dot(Y + i * S, Y + i * S);
         if (q > 4 || q < 0.25) bad = 1;
       }
-      if (bad) { for (int i = 0; i < N; i++) normalize(Y + i * S); mem = 0; E = eval(c, Y, Xn, G); }
+      if (bad) { for (int i = 0; i < N; i++) normalize(Y + i * S); fiber_fix(Y, N); mem = 0; E = eval(c, Y, Xn, G); }
     }
     // stagnation check
     if ((it % 500) == 499) {
@@ -339,6 +374,7 @@ static relax_res relax(ctx_t *c, double *Y, int maxit, double Etol) {
     }
   }
   for (int i = 0; i < N; i++) normalize(Y + i * S);
+  fiber_fix(Y, N);
   relax_res r;
   r.E = E;
   r.it = it;
@@ -433,6 +469,23 @@ int main(int argc, char **argv) {
   rseed(seed);
   int N;
   double *X = load(in, &N);
+  const char *fibf = argval(argc, argv, "-fib", NULL);
+  if (fibf) {
+    int capf = N + 64;
+    g_fib = calloc(capf, 1); g_w = calloc((size_t)capf * 3, sizeof(double)); g_r = calloc(capf, sizeof(double));
+    FILE *ff = fopen(fibf, "r"); int ii; int nf = 0;
+    while (fscanf(ff, "%d", &ii) == 1) if (ii >= 0 && ii < N) { g_fib[ii] = 1; nf++; }
+    fclose(ff);
+    for (int i = 0; i < N; i++) {
+      double rr = 0; for (int k = 0; k < 8; k++) rr += X[i * S + k] * X[i * S + k];
+      g_r[i] = sqrt(rr); for (int k = 0; k < 3; k++) g_w[i * 3 + k] = X[i * S + 8 + k];
+      if (g_fib[i] && g_r[i] < 1e-9) g_fib[i] = 0;  // pure-T points cannot be fibered
+    }
+    if (atoi(argval(argc, argv, "-randu", "0")))
+      for (int i = 0; i < N; i++) if (g_fib[i]) { for (int k = 0; k < 8; k++) X[i * S + k] = rgauss(); }
+    fiber_fix(X, N);
+    printf("fibered points: %d\n", nf);
+  }
   int a, b;
   double mc = maxcos(X, N, &a, &b);
   printf("loaded %d points, maxcos %.15f (%d,%d)\n", N, mc, a, b);
@@ -546,6 +599,36 @@ int main(int argc, char **argv) {
       if (mc < best) { best = mc; save(fnb, X, N); }
     }
     printf("final N=%d best maxcos=%.12f\n", N, best);
+    return 0;
+  }
+
+  if (!strcmp(mode, "shrink")) {
+    // relax; while E>0 remove the point with largest local overlap energy; then try to regrow
+    double t0s = now();
+    double thr = 0.5 - margin;
+    while (1) {
+      ctx_t c; ctx_init(&c, N, thr);
+      relax_res r = relax(&c, X, 20000, 1e-28);
+      ctx_free(&c);
+      if (r.E < 1e-26) break;
+      // local energies
+      double *le = calloc(N, sizeof(double));
+      for (int i = g_nfix; i < N; i++)
+        for (int j = 0; j < N; j++) if (j != i) {
+          double cc = dot(X + i * S, X + j * S);
+          if (cc > thr) le[i] += (cc - thr) * (cc - thr);
+        }
+      int w = g_nfix; for (int i = g_nfix; i < N; i++) if (le[i] > le[w]) w = i;
+      free(le);
+      memmove(X + (size_t)w * S, X + (size_t)(w + 1) * S, (size_t)(N - w - 1) * S * sizeof(double));
+      N--;
+      if (N % 10 == 0) { printf("N=%d E=%.3e (%.0fs)\n", N, r.E, now() - t0s); fflush(stdout); }
+    }
+    mc = maxcos(X, N, NULL, NULL);
+    printf("shrunk to N=%d maxcos=%.12f (%.0fs)\n", N, mc, now() - t0s);
+    char fn[512];
+    snprintf(fn, sizeof fn, "%s_shrunk_N%d_s%llu.txt", out, N, (unsigned long long)seed);
+    save(fn, X, N);
     return 0;
   }
   if (!strcmp(mode, "riesz")) {
