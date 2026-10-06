@@ -1,3 +1,13 @@
 seed 3000 inserted point at hole with maxcos 0.663 final N=605 best maxcos=0.529984227182
 seed 3001 inserted point at hole with maxcos 0.675 final N=605 best maxcos=0.507638744836
 seed 3002 inserted point at hole with maxcos 0.644 final N=605 best maxcos=0.507406257463
+seed 3003 inserted point at hole with maxcos 0.577 final N=605 best maxcos=0.507407709783
+seed 3004 inserted point at hole with maxcos 0.645 final N=605 best maxcos=0.507409137666
+seed 3005 inserted point at hole with maxcos 0.670 final N=605 best maxcos=0.507407996657
+seed 3006 inserted point at hole with maxcos 0.589 final N=605 best maxcos=0.507142977675
+seed 3007 inserted point at hole with maxcos 0.629 final N=605 best maxcos=0.513629984231
+seed 3008 inserted point at hole with maxcos 0.583 final N=605 best maxcos=0.510668985221
+seed 3009 inserted point at hole with maxcos 0.631 final N=605 best maxcos=0.512247439238
+seed 3010 inserted point at hole with maxcos 0.624 final N=605 best maxcos=0.512049931447
+seed 3011 inserted point at hole with maxcos 0.654 final N=605 best maxcos=0.507408037044
+seed 3012 inserted point at hole with maxcos 0.651 final N=605 best maxcos=0.512066249209

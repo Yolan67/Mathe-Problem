@@ -1,3 +1,12 @@
 seed 2000 inserted point at hole with maxcos 0.671 final N=605 best maxcos=0.513524914919
 seed 2001 inserted point at hole with maxcos 0.608 final N=605 best maxcos=0.509911159173
 seed 2002 inserted point at hole with maxcos 0.639 final N=605 best maxcos=0.528777127895
+seed 2003 inserted point at hole with maxcos 0.650 final N=605 best maxcos=0.513106188351
+seed 2004 inserted point at hole with maxcos 0.605 final N=605 best maxcos=0.507406233256
+seed 2005 inserted point at hole with maxcos 0.660 final N=605 best maxcos=0.513130458318
+seed 2006 inserted point at hole with maxcos 0.634 final N=605 best maxcos=0.509722217066
+seed 2007 inserted point at hole with maxcos 0.619 final N=605 best maxcos=0.507406262603
+seed 2008 inserted point at hole with maxcos 0.634 final N=605 best maxcos=0.512308599796
+seed 2009 inserted point at hole with maxcos 0.584 final N=605 best maxcos=0.511045963634
+seed 2010 inserted point at hole with maxcos 0.626 final N=605 best maxcos=0.507409149951
+seed 2011 inserted point at hole with maxcos 0.647 final N=605 best maxcos=0.530116172746
