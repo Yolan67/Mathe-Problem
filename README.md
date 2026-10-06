@@ -46,6 +46,12 @@ Each pair-slice R^5 then contains a full D5 root system (40 = kissing number of 
   threshold annealing, Metropolis acceptance: stuck at penalty energy ≈ 0.07–0.08.
 * Riesz-energy optimization (exponent up to ~800) of 604+1 points: best max cosine 0.51369
   (min angle 59.09°) — `candidates/near605_maxcos0.5137_INVALID.txt` (NOT valid).
+* Log-sum-exp minimax (smoothing parameter up to 10^5) on 604+1, starting from generic numerical
+  604 variants (different frame per pair vector): best max cosine **0.507162** (min angle 59.525°),
+  `candidates/near605_maxcos0.50716_INVALID.txt` (NOT valid). A multistart over 23 further 604
+  variants (`scripts/multistart605.sh`, `logs/multistart605_summary.txt`) gave 0.50724–0.5100;
+  minimax basin hopping (141 hops) did not improve 0.507162. The 604+1 basins therefore sit
+  consistently about 0.007 in cosine (≈0.47°) away from a valid 605.
 * Exact/combinatorial: MIS over relaxed candidate sets (backbone vectors removable), fibered
   candidate sets R^8 ⊕ R^3 with integer/half-integer u-parts and a catalogue of ~60–100 exact
   directions, weighted item formulation under S-sign symmetry (`scripts/itemgraph.py`, `src/misw.c`):
