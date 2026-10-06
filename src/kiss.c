@@ -37,6 +37,8 @@ static void fiber_fix(double *Y, int N) {
   }
 }    // 0: penalty (cc-t)^2, 1: shifted Riesz in q=(1-t)/(1-cc)
 static double g_h = 20;
+static double g_sq = 0;   // squeeze penalty on coordinate g_sqk
+static int g_sqk = 11;
 
 // ---------------------------------------------------------------- rng
 static uint64_t rs[2];
@@ -242,6 +244,9 @@ static double eval(ctx_t *c, const double *Y, double *Xn, double *G) {
       double *gi = G + i * S, *gj = G + j * S;
       for (int k = 0; k < S; k++) { gi[k] += w * xj[k]; gj[k] += w * xi[k]; }
     }
+  }
+  if (g_sq > 0) {
+    for (int i = g_nfix; i < N; i++) { double z = Xn[i * S + g_sqk]; E += g_sq * z * z; G[i * S + g_sqk] += 2 * g_sq * z; }
   }
   memset(G, 0, (size_t)g_nfix * S * sizeof(double));
   // project to tangent space and scale by 1/|y|
@@ -602,6 +607,34 @@ int main(int argc, char **argv) {
     return 0;
   }
 
+
+  if (!strcmp(mode, "squeeze")) {
+    // input in 12 dims (-d 12): optionally grow by -a points, then squeeze coordinate 11 to 0
+    int add = atoi(argval(argc, argv, "-a", "0"));
+    int cap = N + add + 8;
+    X = realloc(X, (size_t)cap * S * sizeof(double));
+    for (int r = 0; r < add; r++) {
+      double y[S]; double v = deepest_hole(X, N, -1, y, 20000, 10);
+      memcpy(X + (size_t)N * S, y, sizeof y); N++;
+      ctx_t c; ctx_init(&c, N, 0.5); relax(&c, X, 5000, 1e-28); ctx_free(&c);
+    }
+    { ctx_t c; ctx_init(&c, N, 0.5); relax_res r = relax(&c, X, 20000, 1e-28); ctx_free(&c);
+      printf("after adding: N=%d E=%.3e\n", N, r.E); fflush(stdout); }
+    double mus[] = {0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100, 1000};
+    for (int q = 0; q < 12; q++) {
+      g_sq = mus[q];
+      ctx_t c; ctx_init(&c, N, 0.5); relax_res r = relax(&c, X, 20000, 1e-30); ctx_free(&c);
+      double mz = 0; for (int i = 0; i < N; i++) { double z = fabs(X[i * S + 11]); if (z > mz) mz = z; }
+      printf("mu=%g E=%.3e max|x12|=%.4f\n", g_sq, r.E, mz); fflush(stdout);
+    }
+    g_sq = 0;
+    for (int i = 0; i < N; i++) { X[i * S + 11] = 0; normalize(X + i * S); }
+    g_dim = 11;
+    char fn[512]; snprintf(fn, sizeof fn, "%s_sq_N%d_s%llu.txt", out, N, (unsigned long long)seed);
+    save(fn, X, N);
+    printf("squeezed and projected: N=%d saved %s\n", N, fn);
+    return 0;
+  }
   if (!strcmp(mode, "shrink")) {
     // relax; while E>0 remove the point with largest local overlap energy; then try to regrow
     double t0s = now();
