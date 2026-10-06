@@ -1,0 +1,1 @@
+records/N604_restacked/config_float.txt: N=604 maxcos=0.500000000000 contacts=22840 antipodal_pts=476 distinct_ips=15 top=[(0.17678, 2048), (0.25, 24448), (0.35355, 256), (0.42678, 3584), (0.5, 22840)
