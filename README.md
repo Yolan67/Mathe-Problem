@@ -61,6 +61,27 @@ Each pair-slice R^5 then contains a full D5 root system (40 = kissing number of 
 * Other templates (|T| = 2,4,5, other coordinate groupings, E8 + two R^7 slices):
   486 / 509 / 527 / 581 / 373 — all worse than 604.
 
+### Session 2 (beyond 604, all unsuccessful so far)
+* Rigidity: the exact 604 has exactly one non-trivial infinitesimal flex (relative rotation of the
+  T-parts of the layers against slices+core, `scripts/flex.py`); generic frame variants have 3 flexes and
+  19704 contacts.  Minimax on the 604 alone cannot push the max cosine below 0.5 (jammed).
+* Deepest holes: cos = 1/sqrt3 (54.7 deg) at the 64 directions (±1)^3 on the 8 unused transversal triples
+  (T = 0), each surrounded by 51 points; hole-centred cap surgeries (51 or 183 points re-packed + 1): 0.533.
+* Partial fixing (D11 roots / layers / D8 / slices+core fixed, rest free, 605 minimax): 0.511-0.519.
+* MIS in larger exact spaces: complete binary-octahedral (2O) quaternionic space H+H+ImH (100914 vectors),
+  icosahedral/dodecahedral T-catalogue (50758), E7+E7 skeleton (max 506), A11 (280), ternary Golay + D11 (354),
+  norm-8 shell of Z^11 in the D11 frame (415): never above 604.  Excluding any structural piece
+  (core / slices / D8 part / a 24-cell) gives at most 592 / 538 / 492 / 580; excluding a layer gives an
+  isometric copy of the 604.
+* D11-region code: all 4.4 M vectors with entries {0,±1,±1/sqrt2} (sqrt8-scaled D11 frame) are compatible
+  with the 220 D11 roots; every one except the 604's own 384 layer points conflicts with >= 6 layer points;
+  MIS over the 64000 lowest-conflict candidates and orbit-MIS under M11, PSL(2,11), F55 and many subgroups
+  of the 604's own symmetry group (order 16384): region code <= 384 (`scripts/regioncands.py`, `src/regorb.c`).
+* Symmetry-reduced global optimisation (F55-invariant 605): 0.547; random starts: 0.542.
+* Calibration in R^12: our optimiser does not reproduce the 840 -> 841 step from the classical code 840
+  (0.532; with 816 fixed even the 24-cell is not recovered), consistent with the literature: the 841 comes
+  from a special member of a continuous family of 840s (flexible "48-systems").
+
 ## Layout
 * `validate/` exact validators · `src/` C search engines (`kiss.c` continuous, `misg.c`/`misw.c`/`mis.c` MIS)
 * `scripts/` constructions and candidate generators · `configs/` building blocks

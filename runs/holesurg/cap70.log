@@ -1,0 +1,8 @@
+loaded 605 points, maxcos 0.577350269189627 (567,604)
+riesz warmup maxcos=0.53429240
+lse h=200 maxcos=0.5377122131
+lse h=300 maxcos=0.5361341409
+lse h=450 maxcos=0.5352879413
+lse h=675 maxcos=0.5346179722
+lse h=1012 maxcos=0.5340923722
+lse h=1519 maxcos=0.5337008880
