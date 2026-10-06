@@ -1,0 +1,7 @@
+loaded 841 points, maxcos 0.500744304387113 (270,303)
+initial relax E=7.7625e-04
+it 20 N=841 E=4.3051e-04 best=4.3051e-04 acc=8 mv=0 t=35
+it 40 N=841 E=3.9724e-04 best=3.9724e-04 acc=15 mv=0 t=63
+it 60 N=841 E=3.9720e-04 best=3.9720e-04 acc=22 mv=0 t=86
+it 80 N=841 E=3.9720e-04 best=3.9720e-04 acc=23 mv=2 t=112
+it 100 N=841 E=3.5933e-04 best=3.5933e-04 acc=30 mv=2 t=138
