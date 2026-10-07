@@ -1,0 +1,9 @@
+|a|^2 0 done, candidates so far 137324
+|a|^2 1 done, candidates so far 582956
+|a|^2 2 done, candidates so far 1059476
+|a|^2 3 done, candidates so far 1167716
+|a|^2 4 done, candidates so far 1170358
+lift candidates (c_11 != 0, compatible): 9806
+edges 22594132
+MIS seed 1 : 140  -> R^12 config size 744
+MIS seed 2 : 140  -> R^12 config size 744
