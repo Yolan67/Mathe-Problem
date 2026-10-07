@@ -1,0 +1,7 @@
+sample 0: new best section 124
+sample 8: new best section 154
+sample 11: new best section 206
+sample 21: new best section 256
+sample 54: new best section 566
+distinct sections found 6917 top sizes [566, 566, 566, 566, 566, 566, 566, 566, 566, 566, 566, 566, 438, 438, 438]
+section saved runs/r12sec/second840_sec.txt size 566 max cos 0.5000000000000007

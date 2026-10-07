@@ -104,6 +104,18 @@ Each pair-slice R^5 then contains a full D5 root system (40 = kissing number of 
   failed insertion the deletion phase removes 10-57 points and regrowth stalls at 582-595 -- consistent with the
   melt tests (grow heals a 5% melt of the 604 but not a 10% melt).  No size above the start was reached.
 
+### Literature (arXiv TeX sources read in full, Oct 2026)
+* Takhanov, arXiv 2609.09179: quaternionic 840 in H^3 = R^12 = three 24-cells C = 2T (one per factor) + M1 = {(a/√2, b/2, c/2)} over
+  T1 = ∪_r (τω^r, ω^r, ω^r)·B̂_0 + M2 = {(a/2, b/√2, c/2)} over T2 = ∪_r (ω^r, τω^r, τω^r)·B̂_{δ_r} (left multiplication; B̂_η = sign lifts
+  of {u+v+w = η} ⊂ (Q8/±1)^3; ω = (1+i+j+k)/2, τ = (1+i)/√2, δ = (j̄, ī, k̄)).  Antipodal, coordinates in Q(√2), 32928 contacts; the third
+  factor carries 1/4 of each mixed vector (frame operator diag(78,78,54)); the numerical 841's extra point lies mainly in factor 3.
+  No symmetry group and nothing on R^11 in the paper.  Rebuilt exactly: `scripts/quat840.py` (= authors' canonical840.txt).
+* Takhanov-Assylbekov-Yun, arXiv 2606.18984: 840 = 60 + 60 + 720 bridges ½(±e_i±e_j±e_{6+k}±e_{6+l}) (same colour of the K6
+  1-factorization), blocks = ±e_i + continuous "48-systems"; 841 numerical only (max ip 0.499999937751, github.com/k-nic/841_in_12D).
+* EinsteinArena, arXiv 2606.10402: same 496 backbone for 594-600; their 604 has 19704 contacts; arena thread 241: 605 plateaus at 0.5074.
+* An R^11 section of an R^12 kissing set is itself valid; X0 is antipodal, so a section with >= 605 points must be central (>= 606).
+  Largest exact sections found (`scripts/sections.py`): quaternionic 840: 348, classical 840: 566, second antipodal 840 (Zenodo): 566.
+
 ## Layout
 * `validate/` exact validators · `src/` C search engines (`kiss.c` continuous, `misg.c`/`misw.c`/`mis.c` MIS)
 * `scripts/` constructions and candidate generators · `configs/` building blocks

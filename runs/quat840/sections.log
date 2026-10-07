@@ -1,0 +1,6 @@
+sample 0: new best section 74
+sample 3: new best section 198
+sample 13: new best section 342
+sample 284: new best section 348
+distinct sections found 8723 top sizes [348, 348, 348, 348, 348, 348, 348, 348, 348, 348, 348, 348, 348, 348, 348]
+section saved runs/quat840/sec_best.txt size 348 max cos 0.5000000000000004

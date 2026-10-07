@@ -1,0 +1,31 @@
+all distinct pairs <x,y> <= 1/2 exactly: True
+antipodal: True
+inner-product profile  (value = (P + Q sqrt2)/16):
+  (-16 +0sqrt2)/16 = -1.000000 : 420
+  (-8 +0sqrt2)/16 = -0.500000 : 32928
+  (-4 -2sqrt2)/16 = -0.426777 : 18432
+  (+0 -4sqrt2)/16 = -0.353553 : 2304
+  (-4 +0sqrt2)/16 = -0.250000 : 43008
+  (-4 +2sqrt2)/16 = -0.073223 : 18432
+  (+0 +0sqrt2)/16 = +0.000000 : 121752
+  (+4 -2sqrt2)/16 = +0.073223 : 18432
+  (+4 +0sqrt2)/16 = +0.250000 : 43008
+  (+0 +4sqrt2)/16 = +0.353553 : 2304
+  (+4 +2sqrt2)/16 = +0.426777 : 18432
+  (+8 +0sqrt2)/16 = +0.500000 : 32928
+total pairs: 352380
+frame operator *16 rational part diag: [1248, 1248, 1248, 1248, 1248, 1248, 1248, 1248, 864, 864, 864, 864]
+frame operator off-diagonal zero: True True
+frame operator diag / 16: [78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 54.0, 54.0, 54.0, 54.0]
+M1 per-factor squared norms: {((1/2+0r2), (1/4+0r2), (1/4+0r2))}
+M2 per-factor squared norms: {((1/4+0r2), (1/2+0r2), (1/4+0r2))}
+E1 factor 1 4*coord values (a,b) for a+b*sqrt2: [(-4, 0), (-2, 0), (0, 0), (2, 0), (4, 0)]
+E1 factor 2 4*coord values (a,b) for a+b*sqrt2: [(0, 0)]
+E1 factor 3 4*coord values (a,b) for a+b*sqrt2: [(0, 0)]
+M1 factor 1 4*coord values (a,b) for a+b*sqrt2: [(-2, 0), (0, 0), (2, 0)]
+M1 factor 2 4*coord values (a,b) for a+b*sqrt2: [(-2, 0), (-1, 0), (0, 0), (1, 0), (2, 0)]
+M1 factor 3 4*coord values (a,b) for a+b*sqrt2: [(-2, 0), (-1, 0), (0, 0), (1, 0), (2, 0)]
+M2 factor 1 4*coord values (a,b) for a+b*sqrt2: [(-2, 0), (-1, 0), (0, 0), (1, 0), (2, 0)]
+M2 factor 2 4*coord values (a,b) for a+b*sqrt2: [(-2, 0), (0, 0), (2, 0)]
+M2 factor 3 4*coord values (a,b) for a+b*sqrt2: [(0, -1), (0, 0), (0, 1)]
+wrote configs/quat840_exact.txt
